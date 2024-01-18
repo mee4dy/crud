@@ -4,6 +4,17 @@
 npm install @mee4dy/crud
 ```
 
+### VuexCrud Params
+| Param       | Type   | Default        | Description                                 |
+|-------------|--------|----------------|---------------------------------------------|
+| endpoints   | `Object` | -              | An object that defines the API endpoints for the CRUD operations. You can customize these endpoints by providing your own values. |
+| pk          | `String` | 'id'           | The name of the primary key field in your data. This is used to uniquely identify each item. |
+| filters     | `Array<String\|Object>` | ['pk']         | An array of default filter options. These filters will be applied by default when making API calls. |
+| groups      | `Array<String\|Object>`  | ['pk']         | An array of default group options. These options will be used for grouping the data. |
+| orders      | `Array<String>`  | ['pk']         | An array of default sorting options. These options will be used for sorting the data. |
+| fields      | `Array<Object>`  | []             | An array of fields to be fetched from the API. Only these fields will be stored in the state. |
+| groupsDefault | `Array<String>` | []             | An array of default grouping options. These options will be selected by default when grouping the data. |
+
 ### Example store
 
 ```javascript

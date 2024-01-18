@@ -1,3 +1,9 @@
+### Installation
+
+```
+npm install @mee4dy/crud
+```
+
 ### Example store
 
 ```javascript

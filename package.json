@@ -1,0 +1,32 @@
+{
+  "name": "@mee4dy/crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mee4dy/crud.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/mee4dy/crud/issues"
+  },
+  "homepage": "https://github.com/mee4dy/crud#readme",
+  "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.8",
+    "@babel/preset-react": "^7.23.3",
+    "babel-loader": "^9.1.3"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.23.4"
+  }
+}

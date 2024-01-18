@@ -226,11 +226,12 @@ export default class {
           const res = await this.$axios.get(endpoint, {
             params: params,
           });
-          commit('setLoading', false);
 
           commit('setItems', res.data.data.items);
         } catch (e) {
           console.log(e);
+        } finally {
+          commit('setLoading', false);
         }
       },
       async updateItem({ commit, state, getters }, { id, data }) {

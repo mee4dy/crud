@@ -9,7 +9,7 @@ export default class {
         ...params.endpoints,
       },
       pk: params.pk || 'id',
-      filters: params?.filters || [],
+      filters: params?.filters || ['pk'],
       groups: params?.groups || ['pk'],
       orders: params?.orders || ['pk'],
 
@@ -73,6 +73,12 @@ export default class {
       },
       getFilters: (state) => {
         return state.filters.map((filter) => {
+          if (typeof filter === 'string') {
+            filter = {
+              key: filter,
+            };
+          }
+
           if (filter.key === 'pk') {
             filter.key = state.pk;
           }
@@ -82,6 +88,12 @@ export default class {
       },
       getGroups: (state) => {
         return state.groups.map((group) => {
+          if (typeof group === 'string') {
+            group = {
+              key: group,
+            };
+          }
+
           if (group.key === 'pk') {
             group.key = state.pk;
           }

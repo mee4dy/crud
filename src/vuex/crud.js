@@ -65,7 +65,7 @@ export default class {
 
         if (endpoint) {
           if (id) {
-            endpoint = endpoint.split(':id').join(id);
+            endpoint = endpoint.split(':id').join(id).split(':pk').join(id);
           }
         }
 

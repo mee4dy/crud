@@ -4,9 +4,11 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
+    "dev": "nodemon --watch src --exec npm run build",
+    "build": "babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf lib",
-    "prepublishOnly": "npm run clean && babel src -d lib"
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
   },
   "dependencies": {
     "@babel/cli": "^7.23.4",
+    "nodemon": "^3.0.3",
     "rimraf": "^5.0.5"
   }
 }

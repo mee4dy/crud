@@ -1,0 +1,205 @@
+import { Op, Sequelize } from 'sequelize';
+import { FilterType } from './enums/filter-type.enum';
+import { OrderDirection } from './enums/order-direction.enum';
+import { Order } from './interfaces/order.interface';
+import { Filter } from './interfaces/filter.interface';
+
+export abstract class CrudService {
+  constructor(params?) {
+    if (params) {
+      Object.assign(this, { ...params });
+    }
+  }
+
+  protected pk = 'id';
+  protected repository;
+  protected limit;
+  protected allowFilters: Filter[] = [{ key: 'pk' }];
+  protected allowGroups: string[] = ['pk'];
+  protected allowOrders: string[] = ['pk'];
+  protected defaultGroups: string[] = ['pk'];
+  protected defaultOrders: Order[] = [['pk', OrderDirection.desc]];
+  protected fields;
+
+  getPK() {
+    return this.pk;
+  }
+
+  getFields(groups: string[] = []) {
+    let fields: any = [];
+
+    if (this.fields) {
+      for (let [fieldQuery, fieldName] of this.fields) {
+        if (this.allowGroups.includes(fieldName)) {
+          if (groups.length && groups.includes(fieldName)) {
+            fields.push([fieldQuery, fieldName]);
+          }
+        } else {
+          fields.push([fieldQuery, fieldName]);
+        }
+      }
+    }
+
+    return fields;
+  }
+
+  getFilters(query) {
+    const filters = [];
+    const queryFilters = query.filters;
+
+    if (queryFilters) {
+      for (const filter of this.allowFilters) {
+        const filterKey = filter.key === 'pk' ? this.pk : filter.key;
+        const filterValue = queryFilters?.[filterKey];
+        const filterValueFrom = queryFilters?.[`${filterKey}_from`];
+        const filterValueTo = queryFilters?.[`${filterKey}_to`];
+        const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field
+
+        if (filterValue || filterValueFrom || filterValueTo) {
+          let whereField = field ? field[0] : Sequelize.col(filterKey);
+          let whereValue: any = {
+            [Op.eq]: filterValue,
+          };
+
+          if (filter.type === FilterType.text) {
+            whereValue = {
+              [Op.like]: `%${filterValue}%`,
+            };
+          }
+
+          if (filter.type === FilterType.period) {
+            whereValue = {
+              [Op.gte]: filterValueFrom,
+              [Op.lte]: filterValueTo,
+            };
+          }
+
+          filters.push(Sequelize.where(whereField, whereValue));
+        }
+      }
+    }
+
+    return filters;
+  }
+
+  getGroups(query) {
+    const groups: any = [];
+    const queryGroups = (query.groups || this.defaultGroups).map((key) => (key === 'pk' ? this.pk : key));
+
+    if (queryGroups) {
+      for (let key of this.allowGroups) {
+        const fieldKey = key === 'pk' ? this.pk : key;
+
+        if (queryGroups.includes(fieldKey)) {
+          groups.push(fieldKey);
+        }
+      }
+    }
+
+    return groups;
+  }
+
+  getOrders(query) {
+    const orders = [];
+    const queryOrders = query.orders
+      ? Object.entries(query.orders).map(([key, direction]) => [key, direction])
+      : this.defaultOrders;
+    const groups = this.getGroups(query);
+    const fields = this.getFields(groups).map((field) => field[1]);
+
+    if (queryOrders) {
+      for (let key of this.allowOrders) {
+        const fieldKey = key === 'pk' ? this.pk : key;
+        const fieldInSelect = !fields.length || fields.includes(fieldKey);
+
+        const order = queryOrders
+          .map(([field, direction]) => {
+            if (field === 'pk') {
+              field = this.pk;
+            }
+
+            return [field, direction];
+          })
+          .find(([field, direction]) => {
+            return field === fieldKey;
+          });
+
+        if (order && fieldInSelect) {
+          orders.push(order);
+        }
+      }
+    }
+
+    return orders;
+  }
+
+  findAll(...args: any) {
+    return this.repository.findAll(...args);
+  }
+
+  findOne(...args: any) {
+    return this.repository.findOne(...args);
+  }
+
+  getFindParams({ query }) {
+    const filters = this.getFilters(query);
+    const orders = this.getOrders(query);
+    const groups = this.getGroups(query);
+    const fields = this.getFields(groups);
+    const limit = this.limit;
+
+    return {
+      attributes: fields.length ? fields : undefined,
+      limit: limit,
+      where: filters,
+      order: orders,
+      group: groups,
+    };
+  }
+
+  getItems({ query }) {
+    const findParams = this.getFindParams({ query });
+
+    return this.findAll({
+      ...findParams,
+    });
+  }
+
+  getItem({ query }) {
+    const findParams = this.getFindParams({ query });
+
+    return this.findAll({
+      ...findParams,
+    });
+  }
+
+  create(data: object) {
+    return this.repository.create({
+      ...data,
+    });
+  }
+
+  update(id: number, data: object, returning: boolean = true) {
+    return this.repository
+      .update(data, {
+        where: {
+          [this.pk]: id,
+        },
+      })
+      .then((result: any) => {
+        if (returning) {
+          return this.findOne({
+            [this.pk]: id,
+          });
+        }
+
+        return result;
+      });
+  }
+
+  delete(where?) {
+    return this.repository.destroy({
+      where,
+    });
+  }
+}

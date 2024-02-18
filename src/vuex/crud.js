@@ -1,4 +1,4 @@
-export default class {
+export class VuexCrud {
   constructor(params) {
     this.state = {
       endpoints: {

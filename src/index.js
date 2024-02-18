@@ -1,3 +1,1 @@
-import VuexCrud from './vuex/crud';
-
-export { VuexCrud };
+export * from './vuex';

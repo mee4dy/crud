@@ -19,6 +19,13 @@ volumes:
 npm link
 ```
 
+### Package structure
+
+- Common interfaces, enums
+- Vuex Store
+- NestJS (Service, Controller)
+- Vue Crud Table (Bootstrap VUE) `Release soon`
+
 ### VuexCrud Params
 
 | Param         | Type                    | Default | Description                                                                                                                       |

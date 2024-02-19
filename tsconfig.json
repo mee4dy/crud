@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules", "dist", "test/**/*", "*.spec.ts"]
+}

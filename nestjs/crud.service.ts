@@ -1,8 +1,8 @@
 import { Op, Sequelize } from 'sequelize';
-import { FilterType } from './enums/filter-type.enum';
-import { OrderDirection } from './enums/order-direction.enum';
-import { Order } from './interfaces/order.interface';
-import { Filter } from './interfaces/filter.interface';
+import { FilterType } from '../common/enums/filter-type.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { Order } from '../common/interfaces/order.interface';
+import { Filter } from '../common/interfaces/filter.interface';
 
 export abstract class CrudService {
   constructor(params?) {

@@ -1,5 +1,5 @@
 import { All, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { Response } from './interfaces/response.interface';
+import { Response } from '../common/interfaces/response.interface';
 import { CrudService } from './crud.service';
 
 export abstract class CrudController {

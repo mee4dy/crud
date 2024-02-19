@@ -36,5 +36,16 @@
     "@nestjs/common": "^10.3.3",
     "rimraf": "^5.0.5",
     "sequelize": "^6.37.1"
-  }
+  },
+  "keywords": [
+    "crud",
+    "nestjs crud",
+    "vuex crud",
+    "nuxt crud",
+    "vue crud",
+    "bootstrap crud",
+    "crud table",
+    "mee4dy",
+    "mee4dy crud"
+  ]
 }

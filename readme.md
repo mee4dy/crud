@@ -118,7 +118,7 @@ export default {
 };
 ```
 
-## Example usage
+### Example usage
 
 ```vue
 <template>

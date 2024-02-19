@@ -1,4 +1,4 @@
-export class VuexCrud {
+export class CrudStore {
   constructor(params) {
     this.state = {
       endpoints: {

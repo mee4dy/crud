@@ -26,7 +26,7 @@ npm link
 - NestJS (Service, Controller)
 - Vue Crud Table (Bootstrap VUE) `Release soon`
 
-### VuexCrud Params
+### Vuex CrudStore Params
 
 | Param         | Type                    | Default | Description                                                                                                                       |
 | ------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -41,9 +41,9 @@ npm link
 ### Example store
 
 ```javascript
-import { VuexCrud } from '@mee4dy/crud';
+import { CrudStore } from '@mee4dy/crud';
 
-const crud = new VuexCrud({
+const crud = new CrudStore({
   pk: 'post_id',
   endpoints: {
     fetch: '/posts',

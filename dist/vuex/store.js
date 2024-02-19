@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VuexCrud = void 0;
-class VuexCrud {
+exports.CrudStore = void 0;
+class CrudStore {
     constructor(params) {
         this.state = {
             endpoints: {
@@ -281,5 +281,5 @@ class VuexCrud {
         };
     }
 }
-exports.VuexCrud = VuexCrud;
-//# sourceMappingURL=crud.js.map
+exports.CrudStore = CrudStore;
+//# sourceMappingURL=store.js.map

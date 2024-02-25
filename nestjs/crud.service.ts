@@ -54,10 +54,11 @@ export abstract class CrudService {
         const filterValueFrom = queryFilters?.[`${filterKey}_from`];
         const filterValueTo = queryFilters?.[`${filterKey}_to`];
         const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field
+        let whereField = field ? field[0] : Sequelize.col(filterKey);
+        let whereValue: any;
 
-        if (filterValue || filterValueFrom || filterValueTo) {
-          let whereField = field ? field[0] : Sequelize.col(filterKey);
-          let whereValue: any = {
+        if (filterValue) {
+          whereValue = {
             [Op.eq]: filterValue,
           };
 
@@ -66,15 +67,19 @@ export abstract class CrudService {
               [Op.like]: `%${filterValue}%`,
             };
           }
+        }
 
+        if (filterValueFrom || filterValueTo) {
           if (filter.type === FilterType.period) {
             whereValue = {
               [Op.gte]: filterValueFrom,
               [Op.lte]: filterValueTo,
             };
           }
+        }
 
-          filters.push(Sequelize.where(whereField, whereValue));
+        if (whereField && whereValue) {
+          filters.push(this.repository.sequelize.where(whereField, whereValue));
         }
       }
     }

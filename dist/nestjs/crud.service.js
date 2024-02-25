@@ -45,9 +45,10 @@ class CrudService {
                 const filterValueFrom = queryFilters === null || queryFilters === void 0 ? void 0 : queryFilters[`${filterKey}_from`];
                 const filterValueTo = queryFilters === null || queryFilters === void 0 ? void 0 : queryFilters[`${filterKey}_to`];
                 const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field
-                if (filterValue || filterValueFrom || filterValueTo) {
-                    let whereField = field ? field[0] : sequelize_1.Sequelize.col(filterKey);
-                    let whereValue = {
+                let whereField = field ? field[0] : sequelize_1.Sequelize.col(filterKey);
+                let whereValue;
+                if (filterValue) {
+                    whereValue = {
                         [sequelize_1.Op.eq]: filterValue,
                     };
                     if (filter.type === filter_type_enum_1.FilterType.text) {
@@ -55,13 +56,17 @@ class CrudService {
                             [sequelize_1.Op.like]: `%${filterValue}%`,
                         };
                     }
+                }
+                if (filterValueFrom || filterValueTo) {
                     if (filter.type === filter_type_enum_1.FilterType.period) {
                         whereValue = {
                             [sequelize_1.Op.gte]: filterValueFrom,
                             [sequelize_1.Op.lte]: filterValueTo,
                         };
                     }
-                    filters.push(sequelize_1.Sequelize.where(whereField, whereValue));
+                }
+                if (whereField && whereValue) {
+                    filters.push(this.repository.sequelize.where(whereField, whereValue));
                 }
             }
         }

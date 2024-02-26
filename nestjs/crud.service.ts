@@ -54,7 +54,7 @@ export abstract class CrudService {
         const filterValueFrom = queryFilters?.[`${filterKey}_from`];
         const filterValueTo = queryFilters?.[`${filterKey}_to`];
         const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field
-        let whereField = field ? field[0] : Sequelize.col(filterKey);
+        let whereField = field ? field[0] : this.repository.sequelize.col(filterKey);
         let whereValue: any;
 
         if (filterValue) {

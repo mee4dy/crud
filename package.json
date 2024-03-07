@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "",
   "main": "./dist/vuex/index.js",
   "type": "commonjs",
@@ -35,7 +35,8 @@
   "dependencies": {
     "@nestjs/common": "^10.3.3",
     "rimraf": "^5.0.5",
-    "sequelize": "^6.37.1"
+    "sequelize": "^6.37.1",
+    "vuex-map-fields": "^1.4.1"
   },
   "keywords": [
     "crud",

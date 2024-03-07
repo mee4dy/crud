@@ -34,6 +34,6 @@ export declare abstract class CrudService {
         query: any;
     }): any;
     create(data: object): any;
-    update(id: number, data: object, returning?: boolean): any;
+    update(pk: number, data: object, returning?: boolean): any;
     delete(where?: any): any;
 }

@@ -7,8 +7,8 @@ class CrudStore {
             endpoints: {
                 meta: false, // /posts/meta
                 fetch: false, // /posts
-                delete: false, // /posts/delete/:id OR send id in body
-                update: false, // /posts/update/:id OR send id in body
+                delete: false, // /posts/delete/:pk OR send pk in body
+                update: false, // /posts/update/:pk OR send pk in body
                 ...params.endpoints,
             },
             pk: params.pk || 'id',
@@ -59,12 +59,12 @@ class CrudStore {
                     orders,
                 };
             },
-            getEndpoint: (state) => (type, id) => {
+            getEndpoint: (state) => (type, pk) => {
                 var _a;
                 let endpoint = (_a = state === null || state === void 0 ? void 0 : state.endpoints) === null || _a === void 0 ? void 0 : _a[type];
                 if (endpoint) {
-                    if (id) {
-                        endpoint = endpoint.split(':id').join(id).split(':pk').join(id);
+                    if (pk) {
+                        endpoint = endpoint.split(':pk').join(pk);
                     }
                 }
                 return endpoint;
@@ -206,18 +206,18 @@ class CrudStore {
                     commit('setLoading', false);
                 }
             },
-            async updateItem({ commit, state, getters }, { id, data }) {
-                const endpoint = getters.getEndpoint('update', id);
-                if (!endpoint || !id) {
+            async updateItem({ commit, state, getters }, { pk, data }) {
+                const endpoint = getters.getEndpoint('update', pk);
+                if (!endpoint || !pk) {
                     return;
                 }
                 try {
                     await this.$axios.post(endpoint, {
-                        id: id,
+                        pk: pk,
                         data: data,
                     });
                     commit('updateItem', {
-                        id: id,
+                        pk: pk,
                         data: data,
                     });
                 }
@@ -225,16 +225,16 @@ class CrudStore {
                     console.log(e);
                 }
             },
-            async deleteItem({ commit, state, getters }, id) {
-                const endpoint = getters.getEndpoint('delete', id);
-                if (!endpoint || !id) {
+            async deleteItem({ commit, state, getters }, pk) {
+                const endpoint = getters.getEndpoint('delete', pk);
+                if (!endpoint || !pk) {
                     return;
                 }
                 try {
                     await this.$axios.post(endpoint, {
-                        id: id,
+                        pk: pk,
                     });
-                    commit('deleteItem', id);
+                    commit('deleteItem', pk);
                 }
                 catch (e) {
                     console.log(e);
@@ -254,17 +254,17 @@ class CrudStore {
             setQuery(state, query) {
                 state.query = query;
             },
-            updateItem: (state, { id, data }) => {
+            updateItem: (state, { pk: pkval, data }) => {
                 const pk = state.pk;
-                const index = state.items.findIndex((i) => i[pk] === id);
+                const index = state.items.findIndex((i) => i[pk] === pkval);
                 if (index >= 0) {
                     const item = state.items[index];
                     state.items.splice(index, 1, { ...item, ...data });
                 }
             },
-            deleteItem: (state, id) => {
+            deleteItem: (state, pkval) => {
                 const pk = state.pk;
-                const index = state.items.findIndex((i) => i[pk] === id);
+                const index = state.items.findIndex((i) => i[pk] === pkval);
                 if (index >= 0) {
                     state.items.splice(index, 1);
                 }

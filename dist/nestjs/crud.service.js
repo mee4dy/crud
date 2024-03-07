@@ -150,17 +150,17 @@ class CrudService {
             ...data,
         });
     }
-    update(id, data, returning = true) {
+    update(pk, data, returning = true) {
         return this.repository
             .update(data, {
             where: {
-                [this.pk]: id,
+                [this.pk]: pk,
             },
         })
             .then((result) => {
             if (returning) {
                 return this.findOne({
-                    [this.pk]: id,
+                    [this.pk]: pk,
                 });
             }
             return result;

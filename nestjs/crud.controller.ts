@@ -23,11 +23,11 @@ export abstract class CrudController {
     };
   }
 
-  @Get('/:id')
-  async item(@Param('id') id: number): Promise<Response> {
+  @Get('/:pk')
+  async item(@Param('pk') pk: number): Promise<Response> {
     const item = await this.service.findOne({
       where: {
-        [this.pk]: id,
+        [this.pk]: pk,
       },
     });
 
@@ -52,8 +52,8 @@ export abstract class CrudController {
   }
 
   @Post('/update')
-  async update(@Body('id') id: number, @Body('data') data: object): Promise<Response> {
-    const item = await this.service.update(id, data);
+  async update(@Body('pk') pk: number, @Body('data') data: object): Promise<Response> {
+    const item = await this.service.update(pk, data);
 
     return {
       status: true,
@@ -64,9 +64,9 @@ export abstract class CrudController {
   }
 
   @Post('/delete')
-  async delete(@Body('id') id: number): Promise<Response> {
+  async delete(@Body('pk') pk: number): Promise<Response> {
     const result = await this.service.delete({
-      [this.pk]: id,
+      [this.pk]: pk,
     });
 
     return {

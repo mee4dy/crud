@@ -30,10 +30,10 @@ class CrudController {
             },
         };
     }
-    async item(id) {
+    async item(pk) {
         const item = await this.service.findOne({
             where: {
-                [this.pk]: id,
+                [this.pk]: pk,
             },
         });
         return {
@@ -52,8 +52,8 @@ class CrudController {
             },
         };
     }
-    async update(id, data) {
-        const item = await this.service.update(id, data);
+    async update(pk, data) {
+        const item = await this.service.update(pk, data);
         return {
             status: true,
             data: {
@@ -61,9 +61,9 @@ class CrudController {
             },
         };
     }
-    async delete(id) {
+    async delete(pk) {
         const result = await this.service.delete({
-            [this.pk]: id,
+            [this.pk]: pk,
         });
         return {
             status: true,
@@ -82,8 +82,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CrudController.prototype, "items", null);
 __decorate([
-    (0, common_1.Get)('/:id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('/:pk'),
+    __param(0, (0, common_1.Param)('pk')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
@@ -97,7 +97,7 @@ __decorate([
 ], CrudController.prototype, "create", null);
 __decorate([
     (0, common_1.Post)('/update'),
-    __param(0, (0, common_1.Body)('id')),
+    __param(0, (0, common_1.Body)('pk')),
     __param(1, (0, common_1.Body)('data')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
@@ -105,7 +105,7 @@ __decorate([
 ], CrudController.prototype, "update", null);
 __decorate([
     (0, common_1.Post)('/delete'),
-    __param(0, (0, common_1.Body)('id')),
+    __param(0, (0, common_1.Body)('pk')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)

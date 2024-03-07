@@ -184,17 +184,17 @@ export abstract class CrudService {
     });
   }
 
-  update(id: number, data: object, returning: boolean = true) {
+  update(pk: number, data: object, returning: boolean = true) {
     return this.repository
       .update(data, {
         where: {
-          [this.pk]: id,
+          [this.pk]: pk,
         },
       })
       .then((result: any) => {
         if (returning) {
           return this.findOne({
-            [this.pk]: id,
+            [this.pk]: pk,
           });
         }
 

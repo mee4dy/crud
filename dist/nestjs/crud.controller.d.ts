@@ -5,8 +5,8 @@ export declare abstract class CrudController {
     constructor(service: CrudService);
     private pk;
     items(query: any): Promise<Response>;
-    item(id: number): Promise<Response>;
+    item(pk: number): Promise<Response>;
     create(data: object): Promise<Response>;
-    update(id: number, data: object): Promise<Response>;
-    delete(id: number): Promise<Response>;
+    update(pk: number, data: object): Promise<Response>;
+    delete(pk: number): Promise<Response>;
 }

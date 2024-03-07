@@ -27,7 +27,7 @@ export class CrudStore {
             groups: any;
             orders: any;
         };
-        getEndpoint: (state: any) => (type: any, id: any) => any;
+        getEndpoint: (state: any) => (type: any, pk: any) => any;
         getFilters: (state: any) => any;
         getGroups: (state: any) => any;
         getOrders: (state: any) => any;
@@ -67,26 +67,26 @@ export class CrudStore {
             commit: any;
             state: any;
             getters: any;
-        }, { id, data }: {
-            id: any;
+        }, { pk, data }: {
+            pk: any;
             data: any;
         }): Promise<void>;
         deleteItem({ commit, state, getters }: {
             commit: any;
             state: any;
             getters: any;
-        }, id: any): Promise<void>;
+        }, pk: any): Promise<void>;
     };
     mutations: {
         setItems(state: any, items: any): void;
         pushItem(state: any, item?: {}): void;
         setLoading(state: any, status: any): void;
         setQuery(state: any, query: any): void;
-        updateItem: (state: any, { id, data }: {
-            id: any;
+        updateItem: (state: any, { pk: pkval, data }: {
+            pk: any;
             data: any;
         }) => void;
-        deleteItem: (state: any, id: any) => void;
+        deleteItem: (state: any, pkval: any) => void;
         setFiltersSelected: (state: any, value: any) => void;
         setGroupsSelected: (state: any, value: any) => void;
         setOrdersSelected: (state: any, value: any) => void;

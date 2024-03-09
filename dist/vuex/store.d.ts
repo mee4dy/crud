@@ -3,6 +3,7 @@ export class CrudStore {
     state: {
         endpoints: any;
         pk: any;
+        includes: any;
         filters: any;
         groups: any;
         orders: any;
@@ -17,12 +18,14 @@ export class CrudStore {
     };
     getters: {
         getItems: (state: any) => any;
+        getIncludes: (state: any, getters: any) => any;
         getFields: (state: any, getters: any) => any;
         getLoading: (state: any) => any;
         getFiltersSelected: (state: any, getters: any) => any;
         getGroupsSelected: (state: any, getters: any) => any;
         getOrdersSelected: (state: any, getters: any) => any;
         getParams: (state: any, getters: any) => {
+            includes: any;
             filters: any;
             groups: any;
             orders: any;

@@ -16,12 +16,14 @@ export declare abstract class CrudService {
     getFilters(query: any): any[];
     getGroups(query: any): any;
     getOrders(query: any): any[];
+    getIncludes(query: any): any;
     findAll(...args: any): any;
     findOne(...args: any): any;
     getFindParams({ query }: {
         query: any;
     }): {
         attributes: any;
+        include: any;
         limit: any;
         where: any[];
         order: any[];

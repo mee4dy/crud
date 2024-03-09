@@ -9,6 +9,7 @@ export class CrudStore {
         ...params.endpoints,
       },
       pk: params.pk || 'id',
+      includes: params?.includes || [],
       filters: params?.filters || ['pk'],
       groups: params?.groups || ['pk'],
       orders: params?.orders || ['pk'],
@@ -31,6 +32,9 @@ export class CrudStore {
           return item;
         });
       },
+      getIncludes: (state, getters) => {
+        return state.includes;
+      },
       getFields: (state, getters) => {
         const groups = getters.getGroups.map((group) => group.key);
         const firstItem = state.items?.[0];
@@ -50,11 +54,13 @@ export class CrudStore {
         return state.ordersSelected;
       },
       getParams: (state, getters) => {
+        const includes = getters.getIncludes;
         const filters = getters.getFiltersSelected;
         const groups = getters.getGroupsSelected;
         const orders = getters.getOrdersSelected;
 
         return {
+          includes,
           filters,
           groups,
           orders,

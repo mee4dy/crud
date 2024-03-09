@@ -138,6 +138,12 @@ export abstract class CrudService {
     return orders;
   }
 
+  getIncludes(query) {
+    const includes = query.includes || [];
+
+    return includes;
+  }
+
   findAll(...args: any) {
     return this.repository.findAll(...args);
   }
@@ -148,6 +154,7 @@ export abstract class CrudService {
 
   getFindParams({ query }) {
     const filters = this.getFilters(query);
+    const includes = this.getIncludes(query);
     const orders = this.getOrders(query);
     const groups = this.getGroups(query);
     const fields = this.getFields(groups);
@@ -155,6 +162,7 @@ export abstract class CrudService {
 
     return {
       attributes: fields.length ? fields : undefined,
+      include: includes,
       limit: limit,
       where: filters,
       order: orders,

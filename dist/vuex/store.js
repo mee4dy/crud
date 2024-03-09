@@ -12,6 +12,7 @@ class CrudStore {
                 ...params.endpoints,
             },
             pk: params.pk || 'id',
+            includes: (params === null || params === void 0 ? void 0 : params.includes) || [],
             filters: (params === null || params === void 0 ? void 0 : params.filters) || ['pk'],
             groups: (params === null || params === void 0 ? void 0 : params.groups) || ['pk'],
             orders: (params === null || params === void 0 ? void 0 : params.orders) || ['pk'],
@@ -30,6 +31,9 @@ class CrudStore {
                     item.pk = item[state.pk];
                     return item;
                 });
+            },
+            getIncludes: (state, getters) => {
+                return state.includes;
             },
             getFields: (state, getters) => {
                 var _a;
@@ -50,10 +54,12 @@ class CrudStore {
                 return state.ordersSelected;
             },
             getParams: (state, getters) => {
+                const includes = getters.getIncludes;
                 const filters = getters.getFiltersSelected;
                 const groups = getters.getGroupsSelected;
                 const orders = getters.getOrdersSelected;
                 return {
+                    includes,
                     filters,
                     groups,
                     orders,

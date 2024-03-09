@@ -15,7 +15,7 @@ export abstract class CrudService {
   protected repository;
   protected limit;
   protected allowFilters: Filter[] = [{ key: 'pk' }];
-  protected allowGroups: string[] = ['pk'];
+  protected allowGroups: string[] = [];
   protected allowOrders: string[] = ['pk'];
   protected defaultGroups: string[] = ['pk'];
   protected defaultOrders: Order[] = [['pk', OrderDirection.desc]];

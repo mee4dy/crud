@@ -8,7 +8,7 @@ class CrudService {
     constructor(params) {
         this.pk = 'id';
         this.allowFilters = [{ key: 'pk' }];
-        this.allowGroups = ['pk'];
+        this.allowGroups = [];
         this.allowOrders = ['pk'];
         this.defaultGroups = ['pk'];
         this.defaultOrders = [['pk', order_direction_enum_1.OrderDirection.desc]];

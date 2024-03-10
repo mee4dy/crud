@@ -240,7 +240,7 @@ export class CrudStore {
           commit('setLoading', false);
         }
       },
-      async updateItem({ commit, state, getters }, { pk, data }) {
+      async update({ commit, state, getters }, { pk, data }) {
         const endpoint = getters.getEndpoint('update', pk);
 
         if (!endpoint || !pk) {
@@ -252,7 +252,7 @@ export class CrudStore {
             pk: pk,
             data: data,
           });
-          commit('updateItem', {
+          commit('update', {
             pk: pk,
             data: data,
           });
@@ -260,7 +260,7 @@ export class CrudStore {
           console.log(e);
         }
       },
-      async deleteItem({ commit, state, getters }, pk) {
+      async delete({ commit, state, getters }, pk) {
         const endpoint = getters.getEndpoint('delete', pk);
 
         if (!endpoint || !pk) {
@@ -271,7 +271,7 @@ export class CrudStore {
           await this.$axios.post(endpoint, {
             pk: pk,
           });
-          commit('deleteItem', pk);
+          commit('delete', pk);
         } catch (e) {
           console.log(e);
         }
@@ -291,7 +291,7 @@ export class CrudStore {
       setQuery(state, query) {
         state.query = query;
       },
-      updateItem: (state, { pk: pkval, data }) => {
+      update: (state, { pk: pkval, data }) => {
         const pk = state.pk;
         const index = state.items.findIndex((i) => i[pk] === pkval);
         if (index >= 0) {
@@ -299,7 +299,7 @@ export class CrudStore {
           state.items.splice(index, 1, { ...item, ...data });
         }
       },
-      deleteItem: (state, pkval) => {
+      delete: (state, pkval) => {
         const pk = state.pk;
         const index = state.items.findIndex((i) => i[pk] === pkval);
 

@@ -66,7 +66,7 @@ export class CrudStore {
             getters: any;
             dispatch: any;
         }, applyQuery?: boolean): Promise<void>;
-        updateItem({ commit, state, getters }: {
+        update({ commit, state, getters }: {
             commit: any;
             state: any;
             getters: any;
@@ -74,7 +74,7 @@ export class CrudStore {
             pk: any;
             data: any;
         }): Promise<void>;
-        deleteItem({ commit, state, getters }: {
+        delete({ commit, state, getters }: {
             commit: any;
             state: any;
             getters: any;
@@ -85,11 +85,11 @@ export class CrudStore {
         pushItem(state: any, item?: {}): void;
         setLoading(state: any, status: any): void;
         setQuery(state: any, query: any): void;
-        updateItem: (state: any, { pk: pkval, data }: {
+        update: (state: any, { pk: pkval, data }: {
             pk: any;
             data: any;
         }) => void;
-        deleteItem: (state: any, pkval: any) => void;
+        delete: (state: any, pkval: any) => void;
         setFiltersSelected: (state: any, value: any) => void;
         setGroupsSelected: (state: any, value: any) => void;
         setOrdersSelected: (state: any, value: any) => void;

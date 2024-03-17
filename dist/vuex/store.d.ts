@@ -1,6 +1,7 @@
 export class CrudStore {
     constructor(params: any);
     state: {
+        ctx: any;
         endpoints: any;
         pk: any;
         includes: any;
@@ -17,7 +18,10 @@ export class CrudStore {
         groupsDefault: any;
     };
     getters: {
-        getItems: (state: any) => any;
+        getCtx: (state: any) => any;
+        getPK: (state: any) => any;
+        getItems: (state: any, getters: any, globalState: any, globalGetters: any) => any;
+        getItemsORM: (state: any, getters: any) => any;
         getIncludes: (state: any, getters: any) => any;
         getFields: (state: any, getters: any) => any;
         getLoading: (state: any) => any;
@@ -60,34 +64,50 @@ export class CrudStore {
             state: any;
             getters: any;
         }): void;
+        setItems({ commit, state, getters, dispatch }: {
+            commit: any;
+            state: any;
+            getters: any;
+            dispatch: any;
+        }, items: any): Promise<void>;
         fetch({ commit, state, getters, dispatch }: {
             commit: any;
             state: any;
             getters: any;
             dispatch: any;
         }, applyQuery?: boolean): Promise<void>;
-        update({ commit, state, getters }: {
+        update({ commit, state, dispatch, getters }: {
             commit: any;
             state: any;
+            dispatch: any;
             getters: any;
-        }, { pk, data }: {
+        }, { pk, data, level }: {
             pk: any;
             data: any;
+            level: any;
         }): Promise<void>;
         delete({ commit, state, getters }: {
             commit: any;
             state: any;
             getters: any;
         }, pk: any): Promise<void>;
+        setCtx({ getters, dispatch, state, commit }: {
+            getters: any;
+            dispatch: any;
+            state: any;
+            commit: any;
+        }): void;
     };
     mutations: {
+        setCtx(state: any, ctx: any): void;
         setItems(state: any, items: any): void;
         pushItem(state: any, item?: {}): void;
         setLoading(state: any, status: any): void;
         setQuery(state: any, query: any): void;
-        update: (state: any, { pk: pkval, data }: {
+        update: (state: any, { pk: pkval, data, level }: {
             pk: any;
             data: any;
+            level: any;
         }) => void;
         delete: (state: any, pkval: any) => void;
         setFiltersSelected: (state: any, value: any) => void;

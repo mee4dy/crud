@@ -158,3 +158,43 @@ export default {
 };
 </script>
 ```
+
+### VUEX ORM-items
+
+```javascript
+const items = [
+  { id: 1, child_id: 11, name: 'test' },
+  { id: 2, child_id: 12, name: 'test2' },
+];
+
+const itemsORM = new ORM(items)
+  .setActions({
+    update: '...',
+    delete: '...',
+  })
+  .setIncludes(['childs']);
+
+const item = itemsORM[0];
+
+// Update item
+item.name = 'test-new';
+await item.save();
+
+// OR Commit changes without save
+item.commit();
+
+// Delete item
+await item.delete();
+
+const itemChild = item.childs[0];
+
+// Update child item
+itemChild.name = 'child-name-new';
+await itemChild.save();
+
+// OR Commit changes without save
+item.commit();
+
+// Delete child
+await itemChild.delete();
+```

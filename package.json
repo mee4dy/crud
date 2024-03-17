@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "",
   "main": "./dist/vuex/index.js",
   "type": "commonjs",
@@ -34,6 +34,8 @@
   },
   "dependencies": {
     "@nestjs/common": "^10.3.3",
+    "deep-object-diff": "^1.1.9",
+    "lodash": "^4.17.21",
     "rimraf": "^5.0.5",
     "sequelize": "^6.37.1",
     "vuex-map-fields": "^1.4.1"

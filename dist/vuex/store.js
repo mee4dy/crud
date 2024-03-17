@@ -1,9 +1,36 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CrudStore = void 0;
+const orm_1 = require("./orm");
+const _ = __importStar(require("lodash"));
+const pk_helper_1 = require("../common/helpers/pk.helper");
 class CrudStore {
     constructor(params) {
         this.state = {
+            ctx: null,
             endpoints: {
                 meta: false, // /posts/meta
                 fetch: false, // /posts
@@ -26,11 +53,43 @@ class CrudStore {
             groupsDefault: (params === null || params === void 0 ? void 0 : params.groupsDefault) || [],
         };
         this.getters = {
-            getItems: (state) => {
+            getCtx: (state) => {
+                return state.ctx;
+            },
+            getPK: (state) => {
+                return state.pk;
+            },
+            getItems: (state, getters, globalState, globalGetters) => {
+                const includes = getters.getIncludes;
                 return state.items.map((item) => {
                     item.pk = item[state.pk];
+                    for (const include of includes) {
+                        if (item[include]) {
+                            const includePK = globalGetters[`${include}/getPK`];
+                            if (includePK) {
+                                (0, pk_helper_1.replacePKItems)(item[include], includePK);
+                            }
+                        }
+                    }
                     return item;
                 });
+            },
+            getItemsORM: (state, getters) => {
+                if (!getters.getCtx) {
+                    return [];
+                }
+                const { dispatch, commit } = getters.getCtx;
+                const items = _.cloneDeep(getters.getItems);
+                const includes = getters.getIncludes;
+                const itemsORM = new orm_1.ORM(items, 'pk', {
+                    update({ pk, data, level }) {
+                        return dispatch('update', { pk, data, level });
+                    },
+                    commit({ pk, data, level }) {
+                        return commit('update', { pk, data, level });
+                    },
+                }, includes).getItems();
+                return itemsORM;
             },
             getIncludes: (state, getters) => {
                 return state.includes;
@@ -189,6 +248,10 @@ class CrudStore {
                 const queryString = decodeURIComponent(queryParams.toString());
                 history.pushState(null, null, queryString ? `?${queryString}` : '');
             },
+            async setItems({ commit, state, getters, dispatch }, items) {
+                await dispatch('setCtx');
+                commit('setItems', items);
+            },
             async fetch({ commit, state, getters, dispatch }, applyQuery = true) {
                 const endpoint = getters.getEndpoint('fetch');
                 if (!endpoint) {
@@ -203,7 +266,8 @@ class CrudStore {
                     const res = await this.$axios.get(endpoint, {
                         params: params,
                     });
-                    commit('setItems', res.data.data.items);
+                    let items = res.data.data.items;
+                    dispatch('setItems', items);
                 }
                 catch (e) {
                     console.log(e);
@@ -212,19 +276,29 @@ class CrudStore {
                     commit('setLoading', false);
                 }
             },
-            async update({ commit, state, getters }, { pk, data }) {
+            async update({ commit, state, dispatch, getters }, { pk, data, level }) {
+                if (level && level.path && level.parentPK) {
+                    const entity = _.toPath(level.path)[0];
+                    await dispatch(`${entity}/update`, { pk, data }, { root: true });
+                    commit('update', {
+                        pk,
+                        data,
+                        level,
+                    });
+                    return;
+                }
                 const endpoint = getters.getEndpoint('update', pk);
                 if (!endpoint || !pk) {
                     return;
                 }
                 try {
                     await this.$axios.post(endpoint, {
-                        pk: pk,
-                        data: data,
+                        pk,
+                        data,
                     });
                     commit('update', {
-                        pk: pk,
-                        data: data,
+                        pk,
+                        data,
                     });
                 }
                 catch (e) {
@@ -246,8 +320,14 @@ class CrudStore {
                     console.log(e);
                 }
             },
+            setCtx({ getters, dispatch, state, commit }) {
+                commit('setCtx', { getters, dispatch, commit, state });
+            },
         };
         this.mutations = {
+            setCtx(state, ctx) {
+                state.ctx = ctx;
+            },
             setItems(state, items) {
                 state.items = items;
             },
@@ -260,8 +340,16 @@ class CrudStore {
             setQuery(state, query) {
                 state.query = query;
             },
-            update: (state, { pk: pkval, data }) => {
+            update: (state, { pk: pkval, data, level }) => {
                 const pk = state.pk;
+                if (level && level.path && level.parentPK) {
+                    let item = state.items.find((i) => i[pk] === level.parentPK);
+                    if (item) {
+                        const { path } = level;
+                        _.merge(_.get(item, path), { ...data });
+                    }
+                    return;
+                }
                 const index = state.items.findIndex((i) => i[pk] === pkval);
                 if (index >= 0) {
                     const item = state.items[index];

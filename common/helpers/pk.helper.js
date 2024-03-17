@@ -1,10 +1,4 @@
-export default function replacePK(payload, pk) {
-  if (Array.isArray(payload)) {
-    return payload.map((payloadItem) => {
-      return replacePK(payloadItem, pk);
-    });
-  }
-
+export function replacePK(payload, pk) {
   if (typeof payload === 'string') {
     if (payload.includes(':pk')) {
       payload = payload.replace(':pk', pk);
@@ -26,4 +20,16 @@ export default function replacePK(payload, pk) {
   }
 
   return payload;
+}
+
+export function replacePKItems(items, pk) {
+  if (!Array.isArray(items)) {
+    return items;
+  }
+
+  return items.map((item) => {
+    item.pk = item[pk];
+
+    return item;
+  });
 }

@@ -1,11 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.replacePKItems = exports.replacePK = void 0;
 function replacePK(payload, pk) {
-    if (Array.isArray(payload)) {
-        return payload.map((payloadItem) => {
-            return replacePK(payloadItem, pk);
-        });
-    }
     if (typeof payload === 'string') {
         if (payload.includes(':pk')) {
             payload = payload.replace(':pk', pk);
@@ -24,5 +20,15 @@ function replacePK(payload, pk) {
     }
     return payload;
 }
-exports.default = replacePK;
+exports.replacePK = replacePK;
+function replacePKItems(items, pk) {
+    if (!Array.isArray(items)) {
+        return items;
+    }
+    return items.map((item) => {
+        item.pk = item[pk];
+        return item;
+    });
+}
+exports.replacePKItems = replacePKItems;
 //# sourceMappingURL=pk.helper.js.map

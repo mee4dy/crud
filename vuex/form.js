@@ -1,5 +1,5 @@
 import { mapFields, getField, updateField } from 'vuex-map-fields';
-import replacePK from '../common/helpers/pk.helper';
+import { replacePK } from '../common/helpers/pk.helper';
 
 const TYPE_CREATE = 'create';
 const TYPE_EDIT = 'edit';

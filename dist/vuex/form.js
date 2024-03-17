@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CrudStoreForm = exports.mapFormData = void 0;
 const vuex_map_fields_1 = require("vuex-map-fields");
-const pk_helper_1 = __importDefault(require("../common/helpers/pk.helper"));
+const pk_helper_1 = require("../common/helpers/pk.helper");
 const TYPE_CREATE = 'create';
 const TYPE_EDIT = 'edit';
 exports.mapFormData = vuex_map_fields_1.mapFields;
@@ -85,7 +82,7 @@ class CrudStoreForm {
                 }
                 try {
                     commit('setLoading', true);
-                    const url = (0, pk_helper_1.default)(endpoint, getters.getPK);
+                    const url = (0, pk_helper_1.replacePK)(endpoint, getters.getPK);
                     const response = await this.$axios.get(url);
                     let itemData = (_b = (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.item;
                     if (typeof state.prepareData === 'function') {
@@ -108,7 +105,7 @@ class CrudStoreForm {
                 if (!endpoint) {
                     return console.error('Endpoint for "submit" not found! Please configure CrudStoreForm');
                 }
-                const url = (0, pk_helper_1.default)(endpoint, getters.getPK);
+                const url = (0, pk_helper_1.replacePK)(endpoint, getters.getPK);
                 const pk = getters.getPK;
                 const data = getters.getData;
                 try {

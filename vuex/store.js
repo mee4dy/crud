@@ -1,6 +1,11 @@
+import { ORM } from './orm';
+import * as _ from 'lodash';
+import { replacePKItems } from '../common/helpers/pk.helper';
+
 export class CrudStore {
   constructor(params) {
     this.state = {
+      ctx: null,
       endpoints: {
         meta: false, // /posts/meta
         fetch: false, // /posts
@@ -25,12 +30,55 @@ export class CrudStore {
     };
 
     this.getters = {
-      getItems: (state) => {
+      getCtx: (state) => {
+        return state.ctx;
+      },
+      getPK: (state) => {
+        return state.pk;
+      },
+      getItems: (state, getters, globalState, globalGetters) => {
+        const includes = getters.getIncludes;
+
         return state.items.map((item) => {
           item.pk = item[state.pk];
 
+          for (const include of includes) {
+            if (item[include]) {
+              const includePK = globalGetters[`${include}/getPK`];
+
+              if (includePK) {
+                replacePKItems(item[include], includePK);
+              }
+            }
+          }
+
           return item;
         });
+      },
+      getItemsORM: (state, getters) => {
+        if (!getters.getCtx) {
+          return [];
+        }
+
+        const { dispatch, commit } = getters.getCtx;
+        const items = _.cloneDeep(getters.getItems);
+        const includes = getters.getIncludes;
+
+        const itemsORM = new ORM(
+          items,
+          'pk',
+          {
+            update({ pk, data, level }) {
+              return dispatch('update', { pk, data, level });
+            },
+            commit({ pk, data, level }) {
+              return commit('update', { pk, data, level });
+            },
+          },
+          includes
+        ).getItems();
+
+        return itemsORM;
       },
       getIncludes: (state, getters) => {
         return state.includes;
@@ -214,6 +262,11 @@ export class CrudStore {
         history.pushState(null, null, queryString ? `?${queryString}` : '');
       },
 
+      async setItems({ commit, state, getters, dispatch }, items) {
+        await dispatch('setCtx');
+
+        commit('setItems', items);
+      },
       async fetch({ commit, state, getters, dispatch }, applyQuery = true) {
         const endpoint = getters.getEndpoint('fetch');
 
@@ -233,14 +286,30 @@ export class CrudStore {
             params: params,
           });
 
-          commit('setItems', res.data.data.items);
+          let items = res.data.data.items;
+
+          dispatch('setItems', items);
         } catch (e) {
           console.log(e);
         } finally {
           commit('setLoading', false);
         }
       },
-      async update({ commit, state, getters }, { pk, data }) {
+      async update({ commit, state, dispatch, getters }, { pk, data, level }) {
+        if (level && level.path && level.parentPK) {
+          const entity = _.toPath(level.path)[0];
+
+          await dispatch(`${entity}/update`, { pk, data }, { root: true });
+
+          commit('update', {
+            pk,
+            data,
+            level,
+          });
+
+          return;
+        }
+
         const endpoint = getters.getEndpoint('update', pk);
 
         if (!endpoint || !pk) {
@@ -249,12 +318,12 @@ export class CrudStore {
 
         try {
           await this.$axios.post(endpoint, {
-            pk: pk,
-            data: data,
+            pk,
+            data,
           });
           commit('update', {
-            pk: pk,
-            data: data,
+            pk,
+            data,
           });
         } catch (e) {
           console.log(e);
@@ -276,9 +345,15 @@ export class CrudStore {
           console.log(e);
         }
       },
+      setCtx({ getters, dispatch, state, commit }) {
+        commit('setCtx', { getters, dispatch, commit, state });
+      },
     };
 
     this.mutations = {
+      setCtx(state, ctx) {
+        state.ctx = ctx;
+      },
       setItems(state, items) {
         state.items = items;
       },
@@ -291,11 +366,25 @@ export class CrudStore {
       setQuery(state, query) {
         state.query = query;
       },
-      update: (state, { pk: pkval, data }) => {
+      update: (state, { pk: pkval, data, level }) => {
         const pk = state.pk;
+
+        if (level && level.path && level.parentPK) {
+          let item = state.items.find((i) => i[pk] === level.parentPK);
+
+          if (item) {
+            const { path } = level;
+            _.merge(_.get(item, path), { ...data });
+          }
+
+          return;
+        }
+
         const index = state.items.findIndex((i) => i[pk] === pkval);
+
         if (index >= 0) {
           const item = state.items[index];
+
           state.items.splice(index, 1, { ...item, ...data });
         }
       },

@@ -3,7 +3,7 @@ import { Actions, Level } from './orm.interfaces';
 import { ORMItem } from './orm-item';
 
 export class ORM {
-  constructor(items: object[] = [], pk = 'id', actions: Actions, includes = [], level: Level) {
+  constructor(items: object[] = [], pk = 'id', actions: Actions, includes = [], level: Level = null) {
     this.setPK(pk);
     this.setLevel(level);
     this.setActions(actions);

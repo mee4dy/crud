@@ -15,7 +15,6 @@ export class ORM {
   private actions: Actions;
   private includes: string[] = [];
   private pk: string;
-  private path: string;
   private level: Level;
 
   public setItems(items = []) {

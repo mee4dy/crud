@@ -101,4 +101,12 @@ export class ORMItem {
       data: itemDiff,
     });
   }
+
+  public delete() {
+    const item = this.getItem();
+
+    return this.callAction('delete', {
+      pk: item.pk,
+    });
+  }
 }

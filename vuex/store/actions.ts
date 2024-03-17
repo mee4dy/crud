@@ -169,7 +169,20 @@ export default {
       console.log(e);
     }
   },
-  async delete({ commit, state, getters }, pk) {
+  async delete({ commit, state, getters, dispatch }, { pk, level }) {
+    if (level && level.path && level.parentPK) {
+      const entity = _.toPath(level.path)[0];
+
+      await dispatch(`${entity}/delete`, { pk }, { root: true });
+
+      commit('delete', {
+        pk,
+        level,
+      });
+
+      return;
+    }
+
     const endpoint = getters.getEndpoint('delete', pk);
 
     if (!endpoint || !pk) {
@@ -177,10 +190,10 @@ export default {
     }
 
     try {
-      await this.$axios.post(endpoint, {
-        pk: pk,
-      });
-      commit('delete', pk);
+      // await this.$axios.post(endpoint, {
+      //   pk: pk,
+      // });
+      commit('delete', { pk });
     } catch (e) {
       console.log(e);
     }

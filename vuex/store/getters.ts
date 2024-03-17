@@ -47,6 +47,9 @@ export default {
         commit({ pk, data, level }) {
           return commit('update', { pk, data, level });
         },
+        delete({ pk, data, level }) {
+          return commit('delete', { pk, level });
+        },
       },
       includes
     ).getItems();

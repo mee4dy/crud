@@ -38,8 +38,22 @@ export default {
       state.items.splice(index, 1, { ...item, ...data });
     }
   },
-  delete: (state, pkval) => {
+  delete: (state, { pk: pkval, level }) => {
     const pk = state.pk;
+
+    if (level && level.path && level.parentPK) {
+      const index = state.items.findIndex((i) => i[pk] === level.parentPK);
+
+      if (index >= 0) {
+        const { path } = level;
+        const pathParse = _.toPath(path);
+
+        state.items[index][pathParse[0]].splice(pathParse[1], 1);
+      }
+
+      return;
+    }
+
     const index = state.items.findIndex((i) => i[pk] === pkval);
 
     if (index >= 0) {

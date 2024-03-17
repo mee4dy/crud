@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "",
   "main": "./dist/vuex/index.js",
   "type": "commonjs",

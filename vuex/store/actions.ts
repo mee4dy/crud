@@ -190,9 +190,9 @@ export default {
     }
 
     try {
-      // await this.$axios.post(endpoint, {
-      //   pk: pk,
-      // });
+      await this.$axios.post(endpoint, {
+        pk: pk,
+      });
       commit('delete', { pk });
     } catch (e) {
       console.log(e);

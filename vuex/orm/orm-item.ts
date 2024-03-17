@@ -77,7 +77,7 @@ export class ORMItem {
 
     itemDiff = _.omit(itemDiff, ['sources']);
 
-    // console.log(path, itemDiff);
+    // console.log(itemDiff);
 
     return itemDiff;
   }

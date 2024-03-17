@@ -33,6 +33,9 @@ export class ORM {
         update(args) {
           return actions.update ? actions.update({ ...args, level: itemLevel }) : null;
         },
+        delete(args) {
+          return actions.delete ? actions.delete({ ...args, level: itemLevel }) : null;
+        },
       });
 
       includes.forEach((include) => {

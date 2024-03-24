@@ -1,30 +1,31 @@
+### Intro
+
+Create a backend and frontend in 5 minutes!
+With our powerful full stack crud system, customize it to suit you.
+
 ### Installation
 
 ```
 npm install @mee4dy/crud
 ```
 
-### Development mode
-
-```
-npm install @mee4dy/crud
-npm run dev
-
-// Mount docker volume
-volumes:
-  - ...
-  - ../crud:/app/node_modules/@mee4dy/crud
-
-// NPM Link (inside crud folder)
-npm link
-```
-
 ### Package structure
 
-- Common interfaces, enums
-- Vuex Store
-- NestJS (Service, Controller)
+- Common interfaces, enums, decorators
+- Vuex Store, Vuex ORM Mode (new)
+- Vuex Forms
+- NestJS (Controller, Service, Decorators)
 - Vue Crud Table (Bootstrap VUE) `Release soon`
+
+### Features
+
+- Vuex CRUD - includes storage, requests to the backend: receiving, creating, deleting, updating
+- Vuex CRUD (ORM mode) - allows you to work with data in the store in ORM style
+- Vuex Forms - creation/editing modes. Compatible with CRUD backend
+- CRUD Controller and CRUD Service for NestJS, with controller-level scoping support
+- (Beta) Support for entity relationships. Ability to connect entities to each other
+- Full compatibility of front-end components and back-end components of the CRUD system
+- Convenient examples, versatility of use, customizable
 
 ### Vuex CrudStore Params
 
@@ -120,46 +121,107 @@ export default {
 
 ### Example usage
 
-```vue
+```html
 <template>
   <ui-table :items="items" :fields="fields" :busy="loading"></ui-table>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex';
+  import { mapActions, mapMutations, mapGetters } from 'vuex';
 
-export default {
-  name: 'PostsTable',
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters({
-      items: 'posts/getItems',
-      fields: 'posts/getFields',
-      loading: 'posts/getLoading',
-    }),
-  },
-  watch: {
-    '$route.query': {
-      immediate: true,
-      handler(query) {
-        this.setQuery(query);
-        this.fetch();
+  export default {
+    name: 'PostsTable',
+    data() {
+      return {};
+    },
+    computed: {
+      ...mapGetters({
+        items: 'posts/getItems',
+        fields: 'posts/getFields',
+        loading: 'posts/getLoading',
+      }),
+    },
+    watch: {
+      '$route.query': {
+        immediate: true,
+        handler(query) {
+          this.setQuery(query);
+          this.fetch();
+        },
       },
     },
-  },
-  methods: {
-    ...mapActions({
-      fetch: 'posts/fetch',
-      setQuery: 'posts/setQuery',
-    }),
-  },
-};
+    methods: {
+      ...mapActions({
+        fetch: 'posts/fetch',
+        setQuery: 'posts/setQuery',
+      }),
+    },
+  };
 </script>
 ```
 
-### VUEX ORM-items
+### VUEX ORM
+
+```
+VUEX ORM provides a convenient tool for editing objects in the VUEX CRUD Store using the ORM approach.
+Use the "save", "commit", "delete" methods to work with store objects.
+```
+
+#### VUE Component
+
+```html
+<template>
+  <div id="posts">
+    <div v-if="loading" class="loader">Loading...</div>
+    <div v-else v-for="item of items">
+      <h1>{{ item.title }}</h1>
+      <div>{{ item.text }}</div>
+      <button @click="modifyTitle(item)">Modify title</button>
+      <button @click="modifyTitleLocal(item)">Modify title (without save)</button>
+      <button @click="deletePost(item)">Delete post</button>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters, mapActions } from 'vuex';
+
+  export default {
+    data() {
+      return {};
+    },
+    computed: {
+      ...mapGetters({
+        fields: 'posts/getFields',
+        items: 'posts/getItemsORM',
+        loading: 'posts/getLoading',
+      }),
+    },
+    mounted() {
+      this.fetch();
+    },
+    methods: {
+      ...mapActions({
+        fetch: 'posts/fetch',
+      }),
+
+      modifyTitle(item) {
+        item.title = 'New Title!';
+        await item.save();
+      },
+      modifyTitleLocal(item) {
+        item.title = 'New Title! (local)';
+        item.commit();
+      },
+      deletePost(item) {
+        await item.delete();
+      }
+    },
+  };
+</script>
+```
+
+#### Custom usage ORM
 
 ```javascript
 const items = [
@@ -197,4 +259,127 @@ item.commit();
 
 // Delete child
 await itemChild.delete();
+```
+
+### NestJS (Examples)
+
+#### CRUD Controller
+
+```
+Сontroller routes:
+/       - get all items
+/:pk    - get item by pk (primary key)
+/create - create item
+/update - update item
+/delete - delete item
+```
+
+##### Controller
+
+```typescript
+@Controller('/posts')
+export class PostsController extends CrudController {
+  constructor(private readonly postsService: postsService) {
+    super(postsService);
+  }
+}
+```
+
+##### Scope
+
+```typescript
+@UseCrudScope((req) => {
+  return {
+    where: {
+      user_id: req.user.id, // Adds a filter by user for all database queries
+    },
+  };
+})
+@Controller('/posts')
+export class PostsController extends CrudController {
+  constructor(private readonly postsService: postsService) {
+    super(postsService);
+  }
+}
+```
+
+##### Custom method
+
+```typescript
+@Controller('/posts')
+export class PostsController extends CrudController {
+  constructor(private readonly postsService: postsService) {
+    super(postsService);
+  }
+
+  @Get('/refresh')
+  async refresh(@Query('post_id') postID) {
+    try {
+      const post = await this.postsService.findOne({
+        where: {
+          post_id: postID,
+        },
+      });
+
+      if (post) {
+        // ...
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+```
+
+#### CRUD Service
+
+##### Service
+
+```typescript
+@Injectable()
+export class PostsService extends CrudService {
+  constructor(
+    @InjectModel(Posts)
+    private postsModel: typeof Posts
+  ) {
+    super();
+  }
+
+  protected pk = 'post_id';
+  protected repository = this.postsModel;
+}
+```
+
+##### Modify repository
+
+```typescript
+@Injectable()
+export class PostsService extends CrudService {
+  constructor(
+    @InjectModel(Posts)
+    private postsModel: typeof Posts
+  ) {
+    super();
+
+    this.repository = this.postsModel.scope(['withStatitstic']);
+  }
+
+  protected pk = 'post_id';
+  protected repository;
+}
+```
+
+### Development mode
+
+```
+npm install @mee4dy/crud
+npm run dev
+
+// Mount docker volume
+volumes:
+  - ...
+  - ../crud:/app/node_modules/@mee4dy/crud
+
+// NPM Link (inside crud folder)
+npm link
 ```

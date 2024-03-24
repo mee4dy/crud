@@ -1,4 +1,4 @@
-import { Op, Sequelize } from 'sequelize';
+import { Model, Op, Sequelize } from 'sequelize';
 import { FilterType } from '../common/enums/filter-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { Order } from '../common/interfaces/order.interface';
@@ -164,25 +164,29 @@ export abstract class CrudService {
       attributes: fields.length ? fields : undefined,
       include: includes,
       limit: limit,
-      where: filters,
+      where: filters.length ? filters : undefined,
       order: orders,
       group: groups,
     };
   }
 
-  getItems({ query }) {
+  getItems({ ctx, query }) {
     const findParams = this.getFindParams({ query });
+    const findParamsCtx = ctx?.findParams || {};
 
     return this.findAll({
       ...findParams,
+      ...findParamsCtx,
     });
   }
 
-  getItem({ query }) {
+  getItem({ ctx, query }) {
     const findParams = this.getFindParams({ query });
+    const findParamsCtx = ctx?.findParams || {};
 
     return this.findAll({
       ...findParams,
+      ...findParamsCtx,
     });
   }
 

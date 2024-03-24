@@ -1,6 +1,7 @@
 import { All, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { Response } from '../common/interfaces/response.interface';
 import { CrudService } from './crud.service';
+import { CrudCtx } from './decorators/crud-ctx.decorator';
 
 export abstract class CrudController {
   constructor(private readonly service: CrudService) {
@@ -10,8 +11,9 @@ export abstract class CrudController {
   private pk;
 
   @Get('/')
-  async items(@Query() query): Promise<Response> {
+  async items(@CrudCtx() ctx, @Query() query): Promise<Response> {
     const items = await this.service.getItems({
+      ctx,
       query,
     });
 
@@ -24,10 +26,11 @@ export abstract class CrudController {
   }
 
   @Get('/:pk')
-  async item(@Param('pk') pk: number): Promise<Response> {
-    const item = await this.service.findOne({
-      where: {
-        [this.pk]: pk,
+  async item(@CrudCtx() ctx, @Param('pk') pk: number): Promise<Response> {
+    const item = await this.service.getItem({
+      ctx,
+      query: {
+        pk,
       },
     });
 
@@ -40,7 +43,7 @@ export abstract class CrudController {
   }
 
   @Post('/create')
-  async create(@Body('data') data: object): Promise<Response> {
+  async create(@CrudCtx() ctx, @Body('data') data: object): Promise<Response> {
     const item = await this.service.create(data);
 
     return {
@@ -52,7 +55,7 @@ export abstract class CrudController {
   }
 
   @Post('/update')
-  async update(@Body('pk') pk: number, @Body('data') data: object): Promise<Response> {
+  async update(@CrudCtx() ctx, @Body('pk') pk: number, @Body('data') data: object): Promise<Response> {
     const item = await this.service.update(pk, data);
 
     return {
@@ -64,7 +67,7 @@ export abstract class CrudController {
   }
 
   @Post('/delete')
-  async delete(@Body('pk') pk: number): Promise<Response> {
+  async delete(@CrudCtx() ctx, @Body('pk') pk: number): Promise<Response> {
     const result = await this.service.delete({
       [this.pk]: pk,
     });

@@ -37,8 +37,7 @@
     "deep-object-diff": "^1.1.9",
     "lodash": "^4.17.21",
     "rimraf": "^5.0.5",
-    "sequelize": "^6.37.1",
-    "vuex-map-fields": "^1.4.1"
+    "sequelize": "^6.37.1"
   },
   "keywords": [
     "crud",

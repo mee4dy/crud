@@ -1,11 +1,7 @@
-import { mapFields, getField, updateField } from 'vuex-map-fields';
 import { FormTypesEnum } from './enums/form-types.enum';
+import * as _ from 'lodash';
 
 export default {
-  getField(state) {
-    return getField(state.data);
-  },
-
   getLoading: (state) => state.loading,
   getSending: (state) => state.sending,
   getType(state) {
@@ -38,8 +34,20 @@ export default {
   getPK(state) {
     return state.pk;
   },
-  getData(state) {
-    return state.data;
+  getData(state, getters) {
+    const dataClone = _.cloneDeep(state.data);
+
+    const proxyResource = new Proxy(dataClone, {
+      set(target, prop, value) {
+        if (typeof state.dataWatcher === 'function') {
+          state.dataWatcher(prop, value);
+        }
+
+        return true;
+      },
+    });
+
+    return proxyResource;
   },
   getDataDefault(state) {
     return state.dataDefault;

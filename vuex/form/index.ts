@@ -1,9 +1,6 @@
-import { mapFields, getField, updateField } from 'vuex-map-fields';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
-
-export const mapFormData = mapFields;
 
 export class CrudStoreForm {
   constructor(params) {
@@ -22,6 +19,7 @@ export class CrudStoreForm {
         ...params.dataDefault,
       },
       prepareData: params.prepareData,
+      dataWatcher: null,
     };
 
     this.getters = getters;

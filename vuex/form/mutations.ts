@@ -1,10 +1,4 @@
-import { mapFields, getField, updateField } from 'vuex-map-fields';
-
 export default {
-  updateField(state, field) {
-    updateField(state.data, field);
-  },
-
   setLoading(state, status) {
     state.loading = status;
   },
@@ -17,7 +11,16 @@ export default {
   setData(state, data) {
     state.data = { ...data };
   },
+  setDataField(state, { field, value }) {
+    state.data = {
+      ...state.data,
+      ...{ [field]: value },
+    };
+  },
   setDataDefault(state, data) {
     state.dataDefault = { ...data };
+  },
+  setDataWatcher(state, dataWatcher) {
+    state.dataWatcher = dataWatcher;
   },
 };

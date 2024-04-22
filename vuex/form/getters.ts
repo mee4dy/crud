@@ -35,19 +35,7 @@ export default {
     return state.pk;
   },
   getData(state, getters) {
-    const dataClone = _.cloneDeep(state.data);
-
-    const proxyResource = new Proxy(dataClone, {
-      set(target, prop, value) {
-        if (typeof state.dataWatcher === 'function') {
-          state.dataWatcher(prop, value);
-        }
-
-        return true;
-      },
-    });
-
-    return proxyResource;
+    return state.data;
   },
   getDataDefault(state) {
     return state.dataDefault;
@@ -56,5 +44,10 @@ export default {
     const data = getters.getData;
 
     return Object.keys(data);
+  },
+  getField: (state, getters) => (field) => {
+    const data = getters.getData;
+
+    return data?.[field];
   },
 };

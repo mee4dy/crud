@@ -2,14 +2,6 @@ import { replacePK } from '../../common/helpers/pk.helper';
 import { FormTypesEnum } from './enums/form-types.enum';
 
 export default {
-  init({ state, commit, getters, dispatch }) {
-    commit('setDataWatcher', (field, value) => {
-      commit('setDataField', {
-        field,
-        value,
-      });
-    });
-  },
   async fetch({ state, commit, getters, dispatch }, pk = null) {
     dispatch('reset', true);
     commit('setPK', pk);

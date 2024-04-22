@@ -261,6 +261,76 @@ item.commit();
 await itemChild.delete();
 ```
 
+#### VUEX FORM
+
+### Store
+
+```js
+import { CrudStoreForm } from '@mee4dy/crud';
+
+const crud = new CrudStoreForm({
+  endpoints: {
+    fetch: '/posts/:pk',
+    create: '/posts/create',
+    update: '/posts/update',
+  },
+});
+
+export default crud;
+```
+
+### VUE component
+
+```vue
+<template>
+  <div id="form">
+    <b-form @submit.prevent="onSubmit">
+      <b-form-group id="input-group-1" label="Title:" label-for="input-1">
+        {{ formData }}
+        <b-form-input id="input-1" v-model="formData.title" type="text" required></b-form-input>
+      </b-form-group>
+      <b-btn type="submit" icon="mdi-plus" variant="primary">Submit</b-btn>
+    </b-form>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import { mapFormData } from '@mee4dy/crud';
+
+export default {
+  computed: {
+    formData: mapFormData('posts/form'), // Form state mapping (for changes with mutations)
+
+    ...mapGetters({
+      fields: 'posts/form/getFields',
+      data: 'posts/form/getData',
+      dataDefault: 'posts/form/getDataDefault',
+    }),
+  },
+  methods: {
+    ...mapActions({
+      init: 'posts/form/init',
+      fetch: 'posts/form/fetch',
+      submit: 'posts/form/submit',
+      reset: 'posts/form/reset',
+    }),
+
+    onSubmit() {
+      this.submit();
+    },
+
+    onReset() {
+      this.reset();
+    },
+  },
+  mounted() {
+    this.fetch(this.id);
+  },
+};
+</script>
+```
+
 ### NestJS (Examples)
 
 #### CRUD Controller

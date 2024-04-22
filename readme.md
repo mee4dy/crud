@@ -1,15 +1,15 @@
-### Intro
+## Intro
 
 Create a backend and frontend in 5 minutes!
 With our powerful full stack crud system, customize it to suit you.
 
-### Installation
+## Installation
 
 ```
 npm install @mee4dy/crud
 ```
 
-### Package structure
+## Package structure
 
 - Common interfaces, enums, decorators
 - Vuex Store, Vuex ORM Mode (new)
@@ -17,7 +17,7 @@ npm install @mee4dy/crud
 - NestJS (Controller, Service, Decorators)
 - Vue Crud Table (Bootstrap VUE) `Release soon`
 
-### Features
+## Features
 
 - Vuex CRUD - includes storage, requests to the backend: receiving, creating, deleting, updating
 - Vuex CRUD (ORM mode) - allows you to work with data in the store in ORM style
@@ -27,7 +27,7 @@ npm install @mee4dy/crud
 - Full compatibility of front-end components and back-end components of the CRUD system
 - Convenient examples, versatility of use, customizable
 
-### Vuex CrudStore Params
+## Vuex CrudStore Params
 
 | Param         | Type                    | Default | Description                                                                                                                       |
 | ------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -39,7 +39,7 @@ npm install @mee4dy/crud
 | fields        | `Array<Object>`         | []      | An array of fields to be fetched from the API. Only these fields will be stored in the state.                                     |
 | groupsDefault | `Array<String>`         | []      | An array of default grouping options. These options will be selected by default when grouping the data.                           |
 
-### Example store
+## Example store
 
 ```javascript
 import { CrudStore } from '@mee4dy/crud';
@@ -119,7 +119,7 @@ export default {
 };
 ```
 
-### Example usage
+## Example usage
 
 ```html
 <template>
@@ -160,14 +160,14 @@ export default {
 </script>
 ```
 
-### VUEX ORM
+## VUEX ORM
 
 ```
 VUEX ORM provides a convenient tool for editing objects in the VUEX CRUD Store using the ORM approach.
 Use the "save", "commit", "delete" methods to work with store objects.
 ```
 
-#### VUE Component
+### VUE Component
 
 ```html
 <template>
@@ -221,7 +221,7 @@ Use the "save", "commit", "delete" methods to work with store objects.
 </script>
 ```
 
-#### Custom usage ORM
+### Custom usage ORM
 
 ```javascript
 const items = [
@@ -261,7 +261,7 @@ item.commit();
 await itemChild.delete();
 ```
 
-#### VUEX FORM
+## VUEX FORM
 
 ### Store
 
@@ -331,9 +331,9 @@ export default {
 </script>
 ```
 
-### NestJS (Examples)
+## NestJS (Examples)
 
-#### CRUD Controller
+### CRUD Controller
 
 ```
 Сontroller routes:
@@ -344,7 +344,7 @@ export default {
 /delete - delete item
 ```
 
-##### Controller
+#### Controller
 
 ```typescript
 @Controller('/posts')
@@ -355,7 +355,7 @@ export class PostsController extends CrudController {
 }
 ```
 
-##### Scope
+#### Scope
 
 ```typescript
 @UseCrudScope((req) => {
@@ -373,7 +373,7 @@ export class PostsController extends CrudController {
 }
 ```
 
-##### Custom method
+#### Custom method
 
 ```typescript
 @Controller('/posts')
@@ -401,9 +401,9 @@ export class PostsController extends CrudController {
 }
 ```
 
-#### CRUD Service
+### CRUD Service
 
-##### Service
+#### Service
 
 ```typescript
 @Injectable()
@@ -420,7 +420,7 @@ export class PostsService extends CrudService {
 }
 ```
 
-##### Modify repository
+#### Modify repository
 
 ```typescript
 @Injectable()
@@ -439,7 +439,7 @@ export class PostsService extends CrudService {
 }
 ```
 
-### Development mode
+## Development mode
 
 ```
 npm install @mee4dy/crud

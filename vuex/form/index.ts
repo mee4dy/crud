@@ -1,3 +1,4 @@
+import state from './state';
 import getters from './getters';
 import actions from './actions';
 import mutations from './mutations';
@@ -30,23 +31,7 @@ export function mapFormData(path, params: { getterData?: string; mutationField?:
 
 export class CrudStoreForm {
   constructor(params) {
-    this.state = {
-      endpoints: {
-        fetch: false, // /item/:pk
-        create: false, // /item/create
-        update: false, // /item/update/:pk OR send pk in body
-        ...params.endpoints,
-      },
-      pk: null,
-      loading: false,
-      sending: false,
-      data: {},
-      dataDefault: {
-        ...params.dataDefault,
-      },
-      prepareData: params.prepareData,
-      dataWatcher: null,
-    };
+    this.state = Object.assign(state, params);
 
     this.getters = getters;
     this.actions = actions;

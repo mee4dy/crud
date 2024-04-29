@@ -7,6 +7,13 @@ export class CrudStore {
   constructor(params) {
     this.state = {
       ctx: null,
+      config: {
+        client: {
+          cancelToken: null,
+          timeout: false,
+          abort: true,
+        },
+      },
       endpoints: {
         meta: false, // /posts/meta
         fetch: false, // /posts

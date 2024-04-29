@@ -117,13 +117,33 @@ export default {
     try {
       commit('setLoading', true);
       const params = getters.getParams;
+      const configClientAbort = getters.getState('config.client.abort');
+      const cancelTokenPrev = getters.getState('config.client.cancelToken');
 
       if (applyQuery) {
         dispatch('syncSelectedToQuery');
       }
 
+      if (configClientAbort && cancelTokenPrev) {
+        cancelTokenPrev.cancel();
+      }
+
+      const cancelToken = this.$axios.CancelToken;
+      const source = cancelToken.source();
+
+      commit('setState', {
+        path: 'config.client.cancelToken',
+        value: source,
+      });
+
       const res = await this.$axios.get(endpoint, {
+        cancelToken: source.token,
         params: params,
+      });
+
+      commit('setState', {
+        path: 'config.client.cancelToken',
+        value: null,
       });
 
       let items = res.data.data.items;

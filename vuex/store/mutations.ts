@@ -1,6 +1,9 @@
 import * as _ from 'lodash';
 
 export default {
+  setState(state, { path, value }) {
+    return _.set(state, path, value);
+  },
   setCtx(state, ctx) {
     state.ctx = ctx;
   },

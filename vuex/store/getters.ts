@@ -3,6 +3,9 @@ import { ORM } from '../orm';
 import * as _ from 'lodash';
 
 export default {
+  getState: (state) => (path) => {
+    return _.get(state, path);
+  },
   getCtx: (state) => {
     return state.ctx;
   },

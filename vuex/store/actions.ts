@@ -136,7 +136,7 @@ export default {
         value: source,
       });
 
-      const res = await this.$axios.get(endpoint, {
+      const response = await this.$axios.get(endpoint, {
         cancelToken: source.token,
         params: params,
       });
@@ -146,9 +146,11 @@ export default {
         value: null,
       });
 
-      let items = res.data.data.items;
+      let items = response.data.data.items;
 
       dispatch('setItems', items);
+
+      return response?.data;
     } catch (e) {
       console.log(e);
     } finally {
@@ -177,7 +179,7 @@ export default {
     }
 
     try {
-      await this.$axios.post(endpoint, {
+      const response = await this.$axios.post(endpoint, {
         pk,
         data,
       });
@@ -185,6 +187,8 @@ export default {
         pk,
         data,
       });
+
+      return response?.data;
     } catch (e) {
       console.log(e);
     }

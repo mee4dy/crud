@@ -31,6 +31,8 @@ export default {
         commit('setDataDefault', itemData);
         commit('setData', itemData);
       }
+
+      return response?.data;
     } catch (e) {
       console.log(e);
     } finally {
@@ -56,7 +58,7 @@ export default {
         data: data,
       });
 
-      return response;
+      return response?.data;
     } catch (e) {
       console.log(e);
     } finally {
@@ -71,5 +73,7 @@ export default {
     }
 
     commit('setData', data);
+
+    return data;
   },
 };

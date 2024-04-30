@@ -1,4 +1,9 @@
 export interface Response {
   status: boolean;
-  data: any;
+  data?: any;
+  error?: {
+    message?: string;
+    statusCode?: number;
+    errorType?: string;
+  };
 }

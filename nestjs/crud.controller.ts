@@ -30,7 +30,9 @@ export abstract class CrudController {
     const item = await this.service.getItem({
       ctx,
       query: {
-        filters: { pk },
+        filters: {
+          [this.pk]: pk,
+        },
       },
     });
 

@@ -347,6 +347,8 @@ export default {
 #### Controller
 
 ```typescript
+import { CrudController } from '@mee4dy/crud/nestjs';
+
 @Controller('/posts')
 export class PostsController extends CrudController {
   constructor(private readonly postsService: postsService) {
@@ -358,6 +360,8 @@ export class PostsController extends CrudController {
 #### Scope
 
 ```typescript
+import { CrudController } from '@mee4dy/crud/nestjs';
+
 @UseCrudScope((req) => {
   return {
     where: {
@@ -376,6 +380,8 @@ export class PostsController extends CrudController {
 #### Custom method
 
 ```typescript
+import { CrudController } from '@mee4dy/crud/nestjs';
+
 @Controller('/posts')
 export class PostsController extends CrudController {
   constructor(private readonly postsService: postsService) {
@@ -406,6 +412,8 @@ export class PostsController extends CrudController {
 #### Service
 
 ```typescript
+import { CrudService } from '@mee4dy/crud/nestjs';
+
 @Injectable()
 export class PostsService extends CrudService {
   constructor(
@@ -423,6 +431,8 @@ export class PostsService extends CrudService {
 #### Modify repository
 
 ```typescript
+import { CrudService } from '@mee4dy/crud/nestjs';
+
 @Injectable()
 export class PostsService extends CrudService {
   constructor(

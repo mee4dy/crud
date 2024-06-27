@@ -360,7 +360,7 @@ export class PostsController extends CrudController {
 #### Scope
 
 ```typescript
-import { CrudController } from '@mee4dy/crud/nestjs';
+import { CrudController, UseCrudScope } from '@mee4dy/crud/nestjs';
 
 @UseCrudScope((req) => {
   return {
@@ -373,6 +373,49 @@ import { CrudController } from '@mee4dy/crud/nestjs';
 export class PostsController extends CrudController {
   constructor(private readonly postsService: postsService) {
     super(postsService);
+  }
+}
+```
+
+#### Context object
+
+```typescript
+import { CrudController, CrudCtx, UseCrudCtx } from '@mee4dy/crud/nestjs';
+
+@UseGuards(AuthGuard('jwt'))
+@UseCrudCtx((req: any) => {
+  const user = req.user;
+
+  return {
+    user: user,
+    // Any other data
+  };
+})
+@Controller('/posts')
+export class PostsController extends CrudController {
+  constructor(private readonly postsService: postsService) {
+    super(postsService);
+  }
+
+  @Post('/create')
+  async create(@CrudCtx() ctx, @Body('data') data: CreateDto) {
+    const user = ctx.user; // User object was passed with UseCrudCtx
+
+    try {
+      // ...
+
+      return {
+        status: true,
+      };
+    } catch (e) {
+      return {
+        status: false,
+        error: {
+          message: e.message,
+          // ...
+        },
+      };
+    }
   }
 }
 ```

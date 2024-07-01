@@ -184,7 +184,7 @@ export abstract class CrudService {
     const findParams = this.getFindParams({ query });
     const findParamsCtx = ctx?.findParams || {};
 
-    return this.findAll({
+    return this.findOne({
       ...findParams,
       ...findParamsCtx,
     });

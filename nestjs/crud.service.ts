@@ -3,6 +3,7 @@ import { FilterType } from '../common/enums/filter-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { Order } from '../common/interfaces/order.interface';
 import { Filter } from '../common/interfaces/filter.interface';
+import * as _ from 'lodash';
 
 export abstract class CrudService {
   constructor(params?) {
@@ -152,41 +153,41 @@ export abstract class CrudService {
     return this.repository.findOne(...args);
   }
 
-  getFindParams({ query }) {
+  getFindParams({ ctx, query }) {
     const filters = this.getFilters(query);
     const includes = this.getIncludes(query);
     const orders = this.getOrders(query);
     const groups = this.getGroups(query);
     const fields = this.getFields(groups);
     const limit = this.limit;
+    const findParamsCtx = ctx?.findParams || {};
 
-    return {
-      attributes: fields.length ? fields : undefined,
-      include: includes,
-      limit: limit,
-      where: filters.length ? filters : undefined,
-      order: orders,
-      group: groups,
-    };
+    return _.merge(
+      {
+        attributes: fields.length ? fields : undefined,
+        include: includes,
+        limit: limit,
+        where: filters.length ? filters : undefined,
+        order: orders,
+        group: groups,
+      },
+      findParamsCtx
+    );
   }
 
-  getItems({ ctx, query }) {
-    const findParams = this.getFindParams({ query });
-    const findParamsCtx = ctx?.findParams || {};
+  getItems({ ctx, query }: { ctx?; query }) {
+    const findParams = this.getFindParams({ ctx, query });
 
     return this.findAll({
       ...findParams,
-      ...findParamsCtx,
     });
   }
 
-  getItem({ ctx, query }) {
-    const findParams = this.getFindParams({ query });
-    const findParamsCtx = ctx?.findParams || {};
+  getItem({ ctx, query }: { ctx?; query }) {
+    const findParams = this.getFindParams({ ctx, query });
 
     return this.findOne({
       ...findParams,
-      ...findParamsCtx,
     });
   }
 

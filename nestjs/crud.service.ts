@@ -140,7 +140,11 @@ export abstract class CrudService {
   }
 
   getLimit(query) {
-    return this.limit || query.limit;
+    if (query?.limit) {
+      return +query.limit;
+    }
+
+    return this.limit;
   }
 
   getIncludes(query) {

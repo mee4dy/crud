@@ -139,6 +139,10 @@ export abstract class CrudService {
     return orders;
   }
 
+  getLimit(query) {
+    return this.limit || query.limit;
+  }
+
   getIncludes(query) {
     const includes = query.includes || [];
 
@@ -159,7 +163,7 @@ export abstract class CrudService {
     const orders = this.getOrders(query);
     const groups = this.getGroups(query);
     const fields = this.getFields(groups);
-    const limit = this.limit;
+    const limit = this.getLimit(query);
     const findParamsCtx = ctx?.findParams || {};
 
     return _.merge(

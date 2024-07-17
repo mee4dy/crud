@@ -1,3 +1,12 @@
+interface Field {
+  key: string;
+  label: string;
+  sortable: boolean;
+  type: string;
+  hidden: boolean;
+  width: string;
+}
+
 export default {
   ctx: null,
   config: {

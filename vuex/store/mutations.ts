@@ -7,6 +7,9 @@ export default {
   setCtx(state, ctx) {
     state.ctx = ctx;
   },
+  setFields(state, fields) {
+    state.fields = fields;
+  },
   setItems(state, items) {
     state.items = items;
   },

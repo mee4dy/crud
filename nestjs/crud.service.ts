@@ -3,7 +3,7 @@ import { FilterType } from '../common/enums/filter-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { Order } from '../common/interfaces/order.interface';
 import { Filter } from '../common/interfaces/filter.interface';
-import * as _ from 'lodash';
+import { merge } from '../common/helpers/merge.helper';
 
 export abstract class CrudService {
   constructor(params?) {
@@ -170,7 +170,7 @@ export abstract class CrudService {
     const limit = this.getLimit(query);
     const findParamsCtx = ctx?.findParams || {};
 
-    return _.merge(
+    return merge(
       {
         attributes: fields.length ? fields : undefined,
         include: includes,

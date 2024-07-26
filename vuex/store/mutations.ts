@@ -66,13 +66,13 @@ export default {
       state.items.splice(index, 1);
     }
   },
-  setFiltersSelected: (state, value) => {
-    state.filtersSelected = value;
+  setSelectedFilters: (state, value) => {
+    state.selectedFilters = value;
   },
-  setGroupsSelected: (state, value) => {
-    state.groupsSelected = value;
+  setSelectedGroups: (state, value) => {
+    state.selectedGroups = value;
   },
-  setOrdersSelected: (state, value) => {
-    state.ordersSelected = value;
+  setSelectedOrders: (state, value) => {
+    state.selectedOrders = value;
   },
 };

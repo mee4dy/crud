@@ -4,14 +4,14 @@ import qs from 'qs';
 export default {
   setQuery({ commit, dispatch }, query) {
     commit('setQuery', query);
-    dispatch('setQueryFiltersSelected', query);
-    dispatch('setQueryGroupsSelected', query);
-    dispatch('setQueryOrdersSelected', query);
+    dispatch('setQuerySelectedFilters', query);
+    dispatch('setQuerySelectedGroups', query);
+    dispatch('setQuerySelectedOrders', query);
   },
-  setQueryFiltersSelected({ commit, state, getters }, query) {
+  setQuerySelectedFilters({ commit, state, getters }, query) {
     const filters = getters.getFilters;
     const queryFilters = query;
-    const filtersSelected = {};
+    const selectedFilters = {};
 
     for (let key in queryFilters) {
       const filterValue = queryFilters[key];
@@ -22,16 +22,16 @@ export default {
       }
 
       if (filters.find((filter) => filter.key === key)) {
-        filtersSelected[key] = filterValue;
+        selectedFilters[key] = filterValue;
       }
     }
 
-    commit('setFiltersSelected', filtersSelected);
+    commit('setSelectedFilters', selectedFilters);
   },
-  setQueryGroupsSelected({ commit, state, getters }, query) {
+  setQuerySelectedGroups({ commit, state, getters }, query) {
     const groups = getters.getGroups.map((group) => group.key);
     const queryGroups = query?.groups ? query?.groups.split(',') : [];
-    const groupsSelected = [];
+    const selectedGroups = [];
 
     for (let key of queryGroups) {
       if (key === 'pk') {
@@ -39,16 +39,16 @@ export default {
       }
 
       if (groups.includes(key)) {
-        groupsSelected.push(key);
+        selectedGroups.push(key);
       }
     }
 
-    commit('setGroupsSelected', groupsSelected);
+    commit('setSelectedGroups', selectedGroups);
   },
-  setQueryOrdersSelected({ commit, state, getters }, query) {
+  setQuerySelectedOrders({ commit, state, getters }, query) {
     const orders = getters.getOrders;
     const queryOrders = query?.orders ? query?.orders.split(',') : [];
-    const ordersSelected = {};
+    const selectedOrders = {};
 
     for (let key of queryOrders) {
       const directionDesc = key.charAt(0) === '-';
@@ -63,23 +63,23 @@ export default {
       }
 
       if (orders.includes(key)) {
-        ordersSelected[key] = directionDesc ? 'desc' : 'asc';
+        selectedOrders[key] = directionDesc ? 'desc' : 'asc';
       }
     }
 
-    commit('setOrdersSelected', ordersSelected);
+    commit('setSelectedOrders', selectedOrders);
   },
   syncSelectedToQuery({ commit, state, getters }) {
-    const queryFiltersSelected = getters.getFiltersSelected;
-    const queryGroupsSelected = getters.getGroupsSelected.join(',');
-    const queryOrdersSelected = Object.entries(getters.getOrdersSelected)
+    const querySelectedFilters = getters.getSelectedFilters;
+    const querySelectedGroups = getters.getSelectedGroups.join(',');
+    const querySelectedOrders = Object.entries(getters.getSelectedOrders)
       .map(([direction, field]) => `${direction === 'desc' ? '-' : ''}${field}`)
       .join(',');
 
     const querySelected = {
-      filters: queryFiltersSelected,
-      groups: queryGroupsSelected,
-      orders: queryOrdersSelected,
+      filters: querySelectedFilters,
+      groups: querySelectedGroups,
+      orders: querySelectedOrders,
     };
 
     const queryParams = new URLSearchParams(window.location.search);
@@ -89,7 +89,7 @@ export default {
 
       if (queryValue) {
         if (typeof queryValue === 'object') {
-          Object.entries(getters.getFiltersSelected).forEach(([field, value]) => {
+          Object.entries(getters.getSelectedFilters).forEach(([field, value]) => {
             queryParams.set(field, value.toString());
           });
         } else {

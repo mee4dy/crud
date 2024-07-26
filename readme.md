@@ -9,6 +9,12 @@ With our powerful full stack crud system, customize it to suit you.
 npm install @mee4dy/crud
 ```
 
+## Running migrations
+
+```
+npm --prefix ./node_modules/@mee4dy/crud run migrate
+```
+
 ## Package structure
 
 - Common interfaces, enums, decorators

@@ -71,14 +71,14 @@ export default {
     });
   },
   getLoading: (state) => state.loading,
-  getFiltersSelected: (state, getters) => {
-    return state.filtersSelected;
+  getSelectedFilters: (state, getters) => {
+    return state.selectedFilters;
   },
-  getGroupsSelected: (state, getters) => {
-    return state.groupsSelected;
+  getSelectedGroups: (state, getters) => {
+    return state.selectedGroups;
   },
-  getOrdersSelected: (state, getters) => {
-    return state.ordersSelected;
+  getSelectedOrders: (state, getters) => {
+    return state.selectedOrders;
   },
   getDefaultFilters: (state, getters) => {
     return state.defaultFilters;
@@ -91,9 +91,9 @@ export default {
   },
   getParams: (state, getters) => {
     const includes = getters.getIncludes;
-    const filters = _.merge(getters.getDefaultFilters, getters.getFiltersSelected);
-    const groups = _.merge(getters.getDefaultGroups, getters.getGroupsSelected);
-    const orders = _.merge(getters.getDefaultOrders, getters.getOrdersSelected);
+    const filters = _.merge(getters.getDefaultFilters, getters.getSelectedFilters);
+    const groups = _.merge(getters.getDefaultGroups, getters.getSelectedGroups);
+    const orders = _.merge(getters.getDefaultOrders, getters.getSelectedOrders);
 
     return {
       includes,

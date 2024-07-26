@@ -35,15 +35,17 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 
 ## Vuex CrudStore Params
 
-| Param         | Type                    | Default | Description                                                                                                                       |
-| ------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| endpoints     | `Object`                | -       | An object that defines the API endpoints for the CRUD operations. You can customize these endpoints by providing your own values. |
-| pk            | `String`                | 'id'    | The name of the primary key field in your data. This is used to uniquely identify each item.                                      |
-| filters       | `Array<String\|Object>` | ['pk']  | An array of default filter options. These filters will be applied by default when making API calls.                               |
-| groups        | `Array<String\|Object>` | ['pk']  | An array of default group options. These options will be used for grouping the data.                                              |
-| orders        | `Array<String>`         | ['pk']  | An array of default sorting options. These options will be used for sorting the data.                                             |
-| fields        | `Array<Object>`         | []      | An array of fields to be fetched from the API. Only these fields will be stored in the state.                                     |
-| groupsDefault | `Array<String>`         | []      | An array of default grouping options. These options will be selected by default when grouping the data.                           |
+| Param          | Type                    | Default | Description                                                                                                                       |
+| -------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| endpoints      | `Object`                | -       | An object that defines the API endpoints for the CRUD operations. You can customize these endpoints by providing your own values. |
+| pk             | `String`                | 'id'    | The name of the primary key field in your data. This is used to uniquely identify each item.                                      |
+| filters        | `Array<String\|Object>` | ['pk']  | An array of default filter options. These filters will be applied by default when making API calls.                               |
+| groups         | `Array<String\|Object>` | ['pk']  | An array of default group options. These options will be used for grouping the data.                                              |
+| orders         | `Array<String>`         | ['pk']  | An array of default sorting options. These options will be used for sorting the data.                                             |
+| fields         | `Array<Object>`         | []      | An array of fields to be fetched from the API. Only these fields will be stored in the state.                                     |
+| defaultFilters | `Object`                | {}      | Object of default filters. (Example: `{ post_id: 1` }`)                                                                           |
+| defaultOrders  | `Object`                | {}      | Object of default orders. (Example: `{ pk: 'desc' }`)                                                                             |
+| defaultGroups  | `Array<String>`         | []      | An array of default grouping options. These options will be selected by default when grouping the data.                           |
 
 ## Example store
 

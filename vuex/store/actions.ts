@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import qs from 'qs';
 
 export default {
   setQuery({ commit, dispatch }, query) {
@@ -29,7 +30,7 @@ export default {
   },
   setQueryGroupsSelected({ commit, state, getters }, query) {
     const groups = getters.getGroups.map((group) => group.key);
-    const queryGroups = query?.groups ? query?.groups.split(',') : state.groupsDefault;
+    const queryGroups = query?.groups ? query?.groups.split(',') : [];
     const groupsSelected = [];
 
     for (let key of queryGroups) {
@@ -139,6 +140,7 @@ export default {
       const response = await this.$axios.get(endpoint, {
         cancelToken: source.token,
         params: params,
+        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
       });
 
       commit('setState', {

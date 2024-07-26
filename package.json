@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.4.19",
+  "version": "1.4.20",
   "description": "",
   "main": "./dist/vuex/index.js",
   "type": "commonjs",
@@ -36,6 +36,7 @@
     "@nestjs/common": "^10.3.3",
     "deep-object-diff": "^1.1.9",
     "lodash": "^4.17.21",
+    "qs": "^6.12.3",
     "rimraf": "^5.0.5",
     "sequelize": "^6.37.1"
   },

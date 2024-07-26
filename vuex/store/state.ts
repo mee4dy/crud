@@ -32,8 +32,10 @@ export default {
   fields: [],
   loading: false,
   query: {},
-  filtersSelected: [],
+  filtersSelected: {},
   groupsSelected: [],
-  ordersSelected: [],
-  groupsDefault: [],
+  ordersSelected: {},
+  defaultFilters: {},
+  defaultGroups: [],
+  defaultOrders: {},
 };

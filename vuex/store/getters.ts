@@ -80,11 +80,20 @@ export default {
   getOrdersSelected: (state, getters) => {
     return state.ordersSelected;
   },
+  getDefaultFilters: (state, getters) => {
+    return state.defaultFilters;
+  },
+  getDefaultGroups: (state, getters) => {
+    return state.defaultGroups;
+  },
+  getDefaultOrders: (state, getters) => {
+    return state.defaultOrders;
+  },
   getParams: (state, getters) => {
     const includes = getters.getIncludes;
-    const filters = getters.getFiltersSelected;
-    const groups = getters.getGroupsSelected;
-    const orders = getters.getOrdersSelected;
+    const filters = _.merge(getters.getDefaultFilters, getters.getFiltersSelected);
+    const groups = _.merge(getters.getDefaultGroups, getters.getGroupsSelected);
+    const orders = _.merge(getters.getDefaultOrders, getters.getOrdersSelected);
 
     return {
       includes,

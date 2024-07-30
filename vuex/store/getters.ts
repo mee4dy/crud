@@ -91,9 +91,9 @@ export default {
   },
   getParams: (state, getters) => {
     const includes = getters.getIncludes;
-    const filters = _.merge(getters.getDefaultFilters, getters.getSelectedFilters);
-    const groups = _.merge(getters.getDefaultGroups, getters.getSelectedGroups);
-    const orders = _.merge(getters.getDefaultOrders, getters.getSelectedOrders);
+    const filters = [getters.getSelectedFilters, getters.getDefaultFilters].find((item) => !_.isEmpty(item));
+    const groups = [getters.getSelectedGroups, getters.getDefaultGroups].find((item) => !_.isEmpty(item));
+    const orders = [getters.getSelectedOrders, getters.getDefaultOrders].find((item) => !_.isEmpty(item));
 
     return {
       includes,

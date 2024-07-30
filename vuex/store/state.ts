@@ -35,7 +35,7 @@ export default {
   selectedFilters: {},
   selectedGroups: [],
   selectedOrders: {},
-  defaultFilters: {},
-  defaultGroups: [],
-  defaultOrders: {},
+  defaultFilters: {}, // used when selected is empty
+  defaultGroups: [], // used when selected is empty
+  defaultOrders: {}, // used when selected is empty
 };

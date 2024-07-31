@@ -51,52 +51,52 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 
 ### Getters
 
-`getState(path)`
-`getCtx`
-`getPK`
-`getItems`
-`getItemsORM`
-`getIncludes`
-`getFields`
-`getLoading`
-`getSelectedFilters`
-`getSelectedGroups`
-`getSelectedOrders`
-`getDefaultFilters`
-`getDefaultGroups`
-`getDefaultOrders`
-`getParams`
-`getEndpoint`
-`getFilters`
-`getGroups`
+`getState(path)`  
+`getCtx`  
+`getPK`  
+`getItems`  
+`getItemsORM`  
+`getIncludes`  
+`getFields`  
+`getLoading`  
+`getSelectedFilters`  
+`getSelectedGroups`  
+`getSelectedOrders`  
+`getDefaultFilters`  
+`getDefaultGroups`  
+`getDefaultOrders`  
+`getParams`  
+`getEndpoint`  
+`getFilters`  
+`getGroups`  
 `getOrders`
 
 ### Mutations
 
-`setState(path, value)`
-`setCtx(ctx)`
-`setFields(fields)`
-`setItems(items)`
-`pushItem(item)`
-`setLoading(status)`
-`setQuery(query)`
-`update({ pk, data, level? })`
-`delete({ pk, level? })`
-`setSelectedFilters(value)`
-`setSelectedGroups(value)`
+`setState(path, value)`  
+`setCtx(ctx)`  
+`setFields(fields)`  
+`setItems(items)`  
+`pushItem(item)`  
+`setLoading(status)`  
+`setQuery(query)`  
+`update({ pk, data, level? })`  
+`delete({ pk, level? })`  
+`setSelectedFilters(value)`  
+`setSelectedGroups(value)`  
 `setSelectedOrders(value)`
 
 ### Actions
 
-`setCtx()`
-`setQuery(query)`
-`setQuerySelectedFilters(query)`
-`setQuerySelectedGroups(query)`
-`setQuerySelectedOrders(query)`
-`syncSelectedToQuery()`
-`setItems(items)`
-`fetch({ applyQuery?, filters?, groups?, orders? })`
-`update({ pk, data, level? })`
+`setCtx()`  
+`setQuery(query)`  
+`setQuerySelectedFilters(query)`  
+`setQuerySelectedGroups(query)`  
+`setQuerySelectedOrders(query)`  
+`syncSelectedToQuery()`  
+`setItems(items)`  
+`fetch({ applyQuery?, filters?, groups?, orders? })`  
+`update({ pk, data, level? })`  
 `delete({ pk, level? })`
 
 ### Example store

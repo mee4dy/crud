@@ -33,7 +33,9 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 - Full compatibility of front-end components and back-end components of the CRUD system
 - Convenient examples, versatility of use, customizable
 
-## Vuex CrudStore Params
+## Vuex Store
+
+### Params
 
 | Param          | Type                    | Default | Description                                                                                                                       |
 | -------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -47,7 +49,57 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 | defaultOrders  | `Object`                | {}      | Object of default orders. (Example: `{ pk: 'desc' }`)                                                                             |
 | defaultGroups  | `Array<String>`         | []      | An array of default grouping options. These options will be selected by default when grouping the data.                           |
 
-## Example store
+### Getters
+
+`getState(path)`
+`getCtx`
+`getPK`
+`getItems`
+`getItemsORM`
+`getIncludes`
+`getFields`
+`getLoading`
+`getSelectedFilters`
+`getSelectedGroups`
+`getSelectedOrders`
+`getDefaultFilters`
+`getDefaultGroups`
+`getDefaultOrders`
+`getParams`
+`getEndpoint`
+`getFilters`
+`getGroups`
+`getOrders`
+
+### Mutations
+
+`setState(path, value)`
+`setCtx(ctx)`
+`setFields(fields)`
+`setItems(items)`
+`pushItem(item)`
+`setLoading(status)`
+`setQuery(query)`
+`update({ pk, data, level? })`
+`delete({ pk, level? })`
+`setSelectedFilters(value)`
+`setSelectedGroups(value)`
+`setSelectedOrders(value)`
+
+### Actions
+
+`setCtx()`
+`setQuery(query)`
+`setQuerySelectedFilters(query)`
+`setQuerySelectedGroups(query)`
+`setQuerySelectedOrders(query)`
+`syncSelectedToQuery()`
+`setItems(items)`
+`fetch({ applyQuery?, filters?, groups?, orders? })`
+`update({ pk, data, level? })`
+`delete({ pk, level? })`
+
+### Example store
 
 ```javascript
 import { CrudStore } from '@mee4dy/crud';
@@ -127,7 +179,7 @@ export default {
 };
 ```
 
-## Example usage
+### Example usage
 
 ```html
 <template>

@@ -9,6 +9,9 @@ interface FetchOptions {
 }
 
 export default {
+  setCtx({ getters, dispatch, state, commit }) {
+    commit('setCtx', { getters, dispatch, commit, state });
+  },
   setQuery({ commit, dispatch }, query) {
     commit('setQuery', query);
     dispatch('setQuerySelectedFilters', query);
@@ -242,8 +245,5 @@ export default {
     } catch (e) {
       console.log(e);
     }
-  },
-  setCtx({ getters, dispatch, state, commit }) {
-    commit('setCtx', { getters, dispatch, commit, state });
   },
 };

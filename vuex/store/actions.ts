@@ -1,6 +1,13 @@
 import * as _ from 'lodash';
 import qs from 'qs';
 
+interface FetchOptions {
+  applyQuery?: boolean;
+  filters?: object;
+  groups?: string[];
+  orders?: object;
+}
+
 export default {
   setQuery({ commit, dispatch }, query) {
     commit('setQuery', query);
@@ -108,7 +115,7 @@ export default {
 
     commit('setItems', items);
   },
-  async fetch({ commit, state, getters, dispatch }, applyQuery = true) {
+  async fetch({ commit, state, getters, dispatch }, options: FetchOptions) {
     const endpoint = getters.getEndpoint('fetch');
 
     if (!endpoint) {
@@ -121,8 +128,20 @@ export default {
       const configClientAbort = getters.getState('config.client.abort');
       const cancelTokenPrev = getters.getState('config.client.cancelToken');
 
-      if (applyQuery) {
+      if (options.applyQuery) {
         dispatch('syncSelectedToQuery');
+      }
+
+      if (options.filters) {
+        params.filters = options.filters;
+      }
+
+      if (options.groups) {
+        params.groups = options.groups;
+      }
+
+      if (options.orders) {
+        params.orders = options.orders;
       }
 
       if (configClientAbort && cancelTokenPrev) {

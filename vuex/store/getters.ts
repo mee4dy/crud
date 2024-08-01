@@ -50,8 +50,8 @@ export default {
         commit({ pk, data, level }) {
           return commit('update', { pk, data, level });
         },
-        delete({ pk, data, level }) {
-          return commit('delete', { pk, level });
+        delete({ pk, level }) {
+          return dispatch('delete', { pk, level });
         },
       },
       includes

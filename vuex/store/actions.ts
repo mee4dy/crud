@@ -131,19 +131,19 @@ export default {
       const configClientAbort = getters.getState('config.client.abort');
       const cancelTokenPrev = getters.getState('config.client.cancelToken');
 
-      if (options.applyQuery) {
+      if (options?.applyQuery) {
         dispatch('syncSelectedToQuery');
       }
 
-      if (options.filters) {
+      if (options?.filters) {
         params.filters = options.filters;
       }
 
-      if (options.groups) {
+      if (options?.groups) {
         params.groups = options.groups;
       }
 
-      if (options.orders) {
+      if (options?.orders) {
         params.orders = options.orders;
       }
 

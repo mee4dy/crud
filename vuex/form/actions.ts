@@ -2,9 +2,14 @@ import { replacePK } from '../../common/helpers/pk.helper';
 import { FormTypesEnum } from './enums/form-types.enum';
 
 export default {
-  async fetch({ state, commit, getters, dispatch }, pk = null) {
-    dispatch('reset', true);
-    commit('setPK', pk);
+  async fetch({ state, commit, getters, dispatch }, options) {
+    if (options?.reset === undefined || options.reset) {
+      dispatch('reset', true);
+    }
+
+    if (options?.pk) {
+      commit('setPK', options?.pk);
+    }
 
     if (getters.getType !== FormTypesEnum.edit) {
       return;

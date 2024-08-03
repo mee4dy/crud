@@ -26,6 +26,10 @@ export abstract class CrudService {
     return this.pk;
   }
 
+  getRepository() {
+    return this.repository;
+  }
+
   getFields(groups: string[] = []) {
     let fields: any = [];
 

@@ -151,6 +151,10 @@ export abstract class CrudService {
     return this.limit;
   }
 
+  getOffset(query) {
+    return +query?.offset || 0;
+  }
+
   getIncludes(query) {
     const includes = query.includes || [];
 
@@ -172,6 +176,7 @@ export abstract class CrudService {
     const groups = this.getGroups(query);
     const fields = this.getFields(groups);
     const limit = this.getLimit(query);
+    const offset = this.getOffset(query);
     const findParamsCtx = ctx?.findParams || {};
 
     return merge(
@@ -179,6 +184,7 @@ export abstract class CrudService {
         attributes: fields.length ? fields : undefined,
         include: includes,
         limit: limit,
+        offset: offset,
         where: filters.length ? filters : undefined,
         order: orders,
         group: groups,

@@ -225,7 +225,9 @@ export abstract class CrudService {
       .then((result: any) => {
         if (returning) {
           return this.findOne({
-            [this.pk]: pk,
+            where: {
+              [this.pk]: pk,
+            },
           });
         }
 

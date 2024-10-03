@@ -96,6 +96,7 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 `syncSelectedToQuery()`  
 `setItems(items)`  
 `fetch({ applyQuery?, filters?, groups?, orders? })`  
+`create({ data })`  
 `update({ pk, data, level? })`  
 `delete({ pk, level? })`
 

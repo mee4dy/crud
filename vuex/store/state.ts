@@ -19,8 +19,9 @@ export default {
   endpoints: {
     meta: false, // /posts/meta
     fetch: false, // /posts
-    delete: false, // /posts/delete/:pk OR send pk in body
+    create: false, // /posts/create
     update: false, // /posts/update/:pk OR send pk in body
+    delete: false, // /posts/delete/:pk OR send pk in body
   },
   pk: 'id',
   includes: [],

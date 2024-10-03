@@ -181,6 +181,23 @@ export default {
       commit('setLoading', false);
     }
   },
+  async create({ commit, state, dispatch, getters }, { data }) {
+    const endpoint = getters.getEndpoint('create');
+
+    if (!endpoint) {
+      return;
+    }
+
+    try {
+      const response = await this.$axios.post(endpoint, {
+        data,
+      });
+
+      return response?.data;
+    } catch (e) {
+      console.log(e);
+    }
+  },
   async update({ commit, state, dispatch, getters }, { pk, data, level }) {
     if (level && level.path && level.parentPK) {
       const entity = _.toPath(level.path)[0];

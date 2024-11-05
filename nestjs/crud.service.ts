@@ -54,6 +54,7 @@ export abstract class CrudService {
 
     if (queryFilters) {
       for (const filter of this.allowFilters) {
+        const filterType = filter.type;
         const filterKey = filter.key === 'pk' ? this.pk : filter.key;
         const filterValue = queryFilters?.[filterKey];
         const filterValueFrom = queryFilters?.[`${filterKey}_from`];
@@ -62,25 +63,32 @@ export abstract class CrudService {
         let whereField = field ? field[0] : this.repository.sequelize.col(`${this.repository.name}.${filterKey}`);
         let whereValue: any;
 
-        if (filterValue) {
-          whereValue = {
-            [Op.eq]: filterValue,
-          };
-
-          if (filter.type === FilterType.text) {
+        switch (filterType) {
+          case FilterType.text:
             whereValue = {
               [Op.like]: `%${filterValue}%`,
             };
-          }
-        }
+            break;
 
-        if (filterValueFrom || filterValueTo) {
-          if (filter.type === FilterType.period) {
-            whereValue = {
-              [Op.gte]: filterValueFrom,
-              [Op.lte]: filterValueTo,
-            };
-          }
+          case FilterType.period:
+            whereValue = {};
+
+            if (filterValueFrom) {
+              whereValue[Op.gte] = filterValueFrom;
+            }
+
+            if (filterValueTo) {
+              whereValue[Op.lte] = filterValueTo;
+            }
+            break;
+
+          default:
+            if (filterValue) {
+              whereValue = {
+                [Op.eq]: filterValue,
+              };
+            }
+            break;
         }
 
         if (whereField && whereValue) {

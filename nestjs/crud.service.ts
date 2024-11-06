@@ -65,9 +65,11 @@ export abstract class CrudService {
 
         switch (filterType) {
           case FilterType.text:
-            whereValue = {
-              [Op.like]: `%${filterValue}%`,
-            };
+            if (filterValue) {
+              whereValue = {
+                [Op.like]: `%${filterValue}%`,
+              };
+            }
             break;
 
           case FilterType.period:

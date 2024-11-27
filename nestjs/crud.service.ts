@@ -84,6 +84,7 @@ export abstract class CrudService {
             }
             break;
 
+          case FilterType.number:
           default:
             if (filterValue) {
               whereValue = {

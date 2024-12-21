@@ -1,17 +1,19 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.4.35",
+  "version": "1.5.0",
   "description": "",
   "main": "./dist/vuex/index.js",
-  "type": "commonjs",
+  "type": "module",
   "exports": {
-    "./common/*": "./dist/common/*.js",
-    "./nestjs": "./dist/nestjs/index.js",
-    "./vuex": "./dist/vuex/index.js"
+    "./common/*": "./dist/common/*.cjs",
+    "./nestjs": "./dist/nestjs/index.cjs",
+    "./vuex": "./dist/vuex/index.js",
+    "./ui/nuxt": "./dist/ui/nuxt/index.js",
+    "./ui/vue": "./dist/ui/vue/index.js"
   },
   "scripts": {
-    "dev": "tsc --watch -p tsconfig.build.json",
-    "build": "tsc -p tsconfig.build.json",
+    "dev": "npm run clean && vite build --watch",
+    "build": "npm run clean && vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run clean && npm run build",
@@ -30,18 +32,23 @@
     "url": "https://github.com/mee4dy/crud/issues"
   },
   "homepage": "https://github.com/mee4dy/crud#readme",
-  "devDependencies": {
-    "typescript": "^5.3.3"
-  },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@nestjs/common": "^10.3.3",
+    "@vitejs/plugin-vue2": "^2.3.3",
+    "bootstrap": "^4.5.3",
+    "bootstrap-vue": "^2.23.1",
     "deep-object-diff": "^1.1.9",
     "find-parent-dir": "^0.3.1",
     "lodash": "^4.17.21",
+    "moment": "^2.30.1",
     "qs": "^6.12.3",
     "replace": "^1.2.2",
     "rimraf": "^5.0.5",
-    "sequelize": "^6.37.1"
+    "sass-loader": "^10.4.1",
+    "sequelize": "^6.37.1",
+    "vite": "^6.0.3",
+    "vue": "^2.7.16"
   },
   "keywords": [
     "crud",

@@ -21,6 +21,7 @@ export abstract class CrudService {
   protected defaultGroups: string[] = ['pk'];
   protected defaultOrders: Order[] = [['pk', OrderDirection.desc]];
   protected fields;
+  protected fieldsAdditional;
 
   getPK() {
     return this.pk;
@@ -31,10 +32,14 @@ export abstract class CrudService {
   }
 
   getFields(groups: string[] = []) {
+    const repositoryAttributes = this.repository.getAttributes();
+    const fieldsDefault = this.fields || Object.keys(repositoryAttributes).map((attr) => [attr, attr]);
+    const fieldsAdditional = this.fieldsAdditional || [];
+    const serviceFields = [...fieldsDefault, ...fieldsAdditional];
     let fields: any = [];
 
-    if (this.fields) {
-      for (let [fieldQuery, fieldName] of this.fields) {
+    if (serviceFields) {
+      for (let [fieldQuery, fieldName] of serviceFields) {
         if (this.allowGroups.includes(fieldName)) {
           if (groups.length && groups.includes(fieldName)) {
             fields.push([fieldQuery, fieldName]);

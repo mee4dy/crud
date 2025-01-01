@@ -17,11 +17,18 @@ npm --prefix ./node_modules/@mee4dy/crud run migrate
 
 ## Package structure
 
-- Common interfaces, enums, decorators
-- Vuex Store, Vuex ORM Mode (new)
-- Vuex Forms
-- NestJS (Controller, Service, Decorators)
-- Vue Crud Table (Bootstrap VUE) `Release soon`
+- **Common**
+  - Interfaces, Enums, Decorators
+- **Fronted**
+  - Vuex Store, Vuex ORM Mode (new)
+  - Vuex Form
+  - UI
+    - Nuxt Crud: Panel, Table (Bootstrap VUE)
+- **Backend**
+  - NestJS
+    - Controller
+    - Service
+    - Decorators
 
 ## Features
 
@@ -127,6 +134,11 @@ const crud = new CrudStore({
     {
       key: 'title',
       label: 'Title',
+      sortable: true,
+    },
+    {
+      key: 'category.name', // Nested field key
+      label: 'Category',
       sortable: true,
     },
     {
@@ -512,6 +524,21 @@ export class PostsController extends CrudController {
 ```
 
 ### CRUD Service
+
+#### Properties
+
+| Param              | Type               | Default                           | Description                                                     |
+| ------------------ | ------------------ | --------------------------------- | --------------------------------------------------------------- |
+| `pk`               | `string`           | `id`                              | Поле, используемое как первичный ключ.                          |
+| `repository`       | `<RepositoryType>` | `-`                               | Репозиторий sequelize для взаимодействия с базой данных.        |
+| `limit`            | `number`           | `-`                               | Максимальное количество записей для выборки.                    |
+| `allowFilters`     | `Filter[]`         | `[ { key: 'pk' } ]`               | Разрешенные фильтры для выборок.                                |
+| `allowGroups`      | `string[]`         | `[]`                              | Разрешенные поля для группировки результатов выборки.           |
+| `allowOrders`      | `string[]`         | `[ 'pk' ]`                        | Разрешенные поля для сортировки результатов выборки.            |
+| `defaultGroups`    | `string[]`         | `[ 'pk' ]`                        | Поля по умолчанию для группировки результатов выборки.          |
+| `defaultOrders`    | `Order[][]`        | `[[ 'pk', OrderDirection.desc ]]` | Поля и порядок сортировки по умолчанию при выполнении запросов. |
+| `fields`           | `<FieldType>`      | `-`                               | Поля репозитория для выборок. По умолчанию все поля модели.     |
+| `fieldsAdditional` | `<FieldType[]>`    | `-`                               | Кастомные дополнительные поля для выборок.                      |
 
 #### Service
 

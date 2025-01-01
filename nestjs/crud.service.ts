@@ -12,9 +12,9 @@ export abstract class CrudService {
     }
   }
 
-  protected pk = 'id';
+  protected pk: string = 'id';
   protected repository;
-  protected limit;
+  protected limit: number;
   protected allowFilters: Filter[] = [{ key: 'pk' }];
   protected allowGroups: string[] = [];
   protected allowOrders: string[] = ['pk'];

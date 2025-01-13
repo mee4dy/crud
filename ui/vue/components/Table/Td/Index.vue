@@ -1,18 +1,20 @@
 <template>
   <div
     class="crud-ui-table-td"
-    :class="{ 'ui-table-td--center': centered }"
-    :style="{ width: this.data.field?.width }"
+    :class="{ 'crud-ui-table-td--center': centered }"
+    :style="{ width: this.field?.width }"
     :title="tooltip"
   >
     <slot v-if="hasSlot"></slot>
     <template v-else>
+      <span v-if="prefix" class="crud-ui-table-td-prefix">{{ prefix }}</span>
       <ui-table-td-boolean v-if="fieldType === 'boolean'" :data="data" v-on="$listeners"></ui-table-td-boolean>
       <ui-table-td-date v-else-if="fieldType === 'date'" :data="data" v-on="$listeners"></ui-table-td-date>
       <ui-table-td-datetime v-else-if="fieldType === 'datetime'" :data="data" v-on="$listeners"></ui-table-td-datetime>
       <ui-table-td-link v-else-if="fieldType === 'link'" :data="data" v-on="$listeners"></ui-table-td-link>
       <ui-table-td-number v-else-if="fieldType === 'number'" :data="data" v-on="$listeners"></ui-table-td-number>
       <ui-table-td-value v-else>{{ data.value }}</ui-table-td-value>
+      <span v-if="suffix" class="crud-ui-table-td-suffix">{{ suffix }}</span>
     </template>
   </div>
 </template>
@@ -40,17 +42,26 @@ export default {
     },
   },
   computed: {
+    field() {
+      return this.data?.field;
+    },
     fieldType() {
-      return this.data?.field?.type || 'value';
+      return this.field?.type || 'value';
     },
     tooltip() {
-      return this.data?.field?.tooltip;
+      return this.field?.tooltip;
+    },
+    prefix() {
+      return this.field?.prefix;
+    },
+    suffix() {
+      return this.field?.suffix;
     },
     hasSlot() {
       return !!this.$slots['default'];
     },
     centered() {
-      return this.data?.field?.centered || ['boolean'].includes(this.fieldType);
+      return this.field?.centered || ['boolean'].includes(this.fieldType);
     },
   },
 };
@@ -73,6 +84,11 @@ export default {
   .btn {
     margin-right: 5px;
     margin-bottom: 5px;
+  }
+
+  &-prefix,
+  &-suffix {
+    white-space: pre;
   }
 }
 </style>

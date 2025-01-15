@@ -21,7 +21,7 @@ export abstract class CrudService {
   protected defaultGroups: string[] = ['pk'];
   protected defaultOrders: Order[] = [['pk', OrderDirection.desc]];
   protected fields;
-  protected fieldsAdditional;
+  protected fieldsExclude: string[];
 
   getPK() {
     return this.pk;
@@ -31,26 +31,27 @@ export abstract class CrudService {
     return this.repository;
   }
 
-  getFields(groups: string[] = []) {
-    const repositoryAttributes = this.repository.getAttributes();
-    const fieldsDefault = this.fields || Object.keys(repositoryAttributes).map((attr) => [attr, attr]);
-    const fieldsAdditional = this.fieldsAdditional || [];
-    const serviceFields = [...fieldsDefault, ...fieldsAdditional];
-    let fields: any = [];
+  getFields(groups: string[] = []): { include: any; exclude: any } {
+    const fields = this.fields || [];
+    const fieldsExclude = this.fieldsExclude || [];
+    const fieldsInclude: any = [];
 
-    if (serviceFields) {
-      for (let [fieldQuery, fieldName] of serviceFields) {
+    if (fieldsInclude) {
+      for (let [fieldQuery, fieldName] of fields) {
         if (this.allowGroups.includes(fieldName)) {
           if (groups.length && groups.includes(fieldName)) {
-            fields.push([fieldQuery, fieldName]);
+            fieldsInclude.push([fieldQuery, fieldName]);
           }
         } else {
-          fields.push([fieldQuery, fieldName]);
+          fieldsInclude.push([fieldQuery, fieldName]);
         }
       }
     }
 
-    return fields;
+    return {
+      include: fieldsInclude,
+      exclude: fieldsExclude,
+    };
   }
 
   getFilters(query) {
@@ -131,12 +132,13 @@ export abstract class CrudService {
       ? Object.entries(query.orders).map(([key, direction]) => [key, direction])
       : this.defaultOrders;
     const groups = this.getGroups(query);
-    const fields = this.getFields(groups).map((field) => field[1]);
+    const fields = this.getFields(groups);
+    const fieldNames = fields.include.map((field) => field[1]);
 
     if (queryOrders) {
       for (let key of this.allowOrders) {
         const fieldKey = key === 'pk' ? this.pk : key;
-        const fieldInSelect = !fields.length || fields.includes(fieldKey);
+        const fieldInSelect = !fieldNames.length || fieldNames.includes(fieldKey);
 
         const order = queryOrders
           .map(([field, direction]) => {
@@ -195,9 +197,19 @@ export abstract class CrudService {
     const offset = this.getOffset(query);
     const findParamsCtx = ctx?.findParams || {};
 
+    console.log({
+      attributes: {
+        include: fields?.include?.length ? fields?.include : undefined,
+        exclude: fields?.exclude?.length ? fields?.exclude : undefined,
+      },
+    });
+
     return merge(
       {
-        attributes: fields.length ? fields : undefined,
+        attributes: {
+          include: fields?.include?.length ? fields?.include : undefined,
+          exclude: fields?.exclude?.length ? fields?.exclude : undefined,
+        },
         include: includes,
         limit: limit,
         offset: offset,

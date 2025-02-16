@@ -197,13 +197,6 @@ export abstract class CrudService {
     const offset = this.getOffset(query);
     const findParamsCtx = ctx?.findParams || {};
 
-    console.log({
-      attributes: {
-        include: fields?.include?.length ? fields?.include : undefined,
-        exclude: fields?.exclude?.length ? fields?.exclude : undefined,
-      },
-    });
-
     return merge(
       {
         attributes: {

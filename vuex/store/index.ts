@@ -6,10 +6,19 @@ import mutations from './mutations';
 
 export class CrudStore {
   constructor(params = {}) {
-    this.state = Object.assign(state, params);
-    this.getters = getters;
-    this.actions = actions;
-    this.mutations = mutations;
+    this.state = {
+      ...state,
+      ...params,
+    };
+    this.getters = {
+      ...getters,
+    };
+    this.actions = {
+      ...actions,
+    };
+    this.mutations = {
+      ...mutations,
+    };
   }
 
   public state;

@@ -165,11 +165,6 @@ export default {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
       });
 
-      commit('setState', {
-        path: 'config.client.cancelToken',
-        value: null,
-      });
-
       let items = response.data.data.items;
 
       dispatch('setItems', items);
@@ -179,6 +174,10 @@ export default {
       console.log(e);
     } finally {
       commit('setLoading', false);
+      commit('setState', {
+        path: 'config.client.cancelToken',
+        value: null,
+      });
     }
   },
   async create({ commit, state, dispatch, getters }, { data }) {

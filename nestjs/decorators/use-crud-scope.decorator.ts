@@ -5,12 +5,12 @@ export const UseCrudScope = (callback) => {
   const middlewareDecorator = UseMiddleware((req) => {
     const crudScope = callback(req);
 
-    if (!req.crud) {
-      req.crud = {};
+    if (!req.crudCtx) {
+      req.crudCtx = {};
     }
 
-    req.crud.findParams = {
-      ...req.crud.findParams,
+    req.crudCtx.params = {
+      ...req.crudCtx.params,
       ...crudScope,
     };
   });

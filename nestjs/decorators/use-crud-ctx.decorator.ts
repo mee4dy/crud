@@ -5,12 +5,12 @@ export const UseCrudCtx = (callback) => {
   const middlewareDecorator = UseMiddleware((req) => {
     const crudCtx = callback(req);
 
-    if (!req.crud) {
-      req.crud = {};
+    if (!req.crudCtx) {
+      req.crudCtx = {};
     }
 
-    req.crud = {
-      ...req.crud,
+    req.crudCtx = {
+      ...req.crudCtx,
       ...crudCtx,
     };
   });

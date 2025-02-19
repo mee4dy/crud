@@ -179,15 +179,15 @@ export abstract class CrudService {
     return includes;
   }
 
-  findAll(...args: any) {
-    return this.repository.findAll(...args);
+  findAll({ scope, ...params }: any) {
+    return this.repository.scope(scope).findAll(params);
   }
 
-  findOne(...args: any) {
-    return this.repository.findOne(...args);
+  findOne({ scope, ...params }: any) {
+    return this.repository.scope(scope).findOne(params);
   }
 
-  getFindParams({ ctx, query }) {
+  getFindParams({ params, query }) {
     const filters = this.getFilters(query);
     const includes = this.getIncludes(query);
     const orders = this.getOrders(query);
@@ -195,35 +195,33 @@ export abstract class CrudService {
     const fields = this.getFields(groups);
     const limit = this.getLimit(query);
     const offset = this.getOffset(query);
-    const findParamsCtx = ctx?.findParams || {};
-
-    return merge(
-      {
-        attributes: {
-          include: fields?.include?.length ? fields?.include : undefined,
-          exclude: fields?.exclude?.length ? fields?.exclude : undefined,
-        },
-        include: includes,
-        limit: limit,
-        offset: offset,
-        where: filters.length ? filters : undefined,
-        order: orders,
-        group: groups,
+    const findParams = params || {};
+    const findParamsBase = {
+      attributes: {
+        include: fields?.include?.length ? fields?.include : undefined,
+        exclude: fields?.exclude?.length ? fields?.exclude : undefined,
       },
-      findParamsCtx
-    );
+      include: includes,
+      limit: limit,
+      offset: offset,
+      where: filters.length ? filters : undefined,
+      order: orders,
+      group: groups,
+    };
+
+    return merge(findParamsBase, findParams);
   }
 
-  getItems({ ctx, query }: { ctx?; query }) {
-    const findParams = this.getFindParams({ ctx, query });
+  getItems({ params, query }: { params?; query? }) {
+    const findParams = this.getFindParams({ params, query });
 
     return this.findAll({
       ...findParams,
     });
   }
 
-  getItem({ ctx, query }: { ctx?; query }) {
-    const findParams = this.getFindParams({ ctx, query });
+  getItem({ params, query }: { params?; query? }) {
+    const findParams = this.getFindParams({ params, query });
 
     return this.findOne({
       ...findParams,

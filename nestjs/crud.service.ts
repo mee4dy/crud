@@ -4,6 +4,7 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { Order } from '../common/interfaces/order.interface';
 import { Filter } from '../common/interfaces/filter.interface';
 import { merge } from '../common/helpers/merge.helper';
+import { FindParams } from './interfaces/find-params.interface';
 
 export abstract class CrudService {
   constructor(params?) {
@@ -179,15 +180,15 @@ export abstract class CrudService {
     return includes;
   }
 
-  findAll({ scope, ...params }: any) {
+  findAll({ scope, ...params }: FindParams) {
     return this.repository.scope(scope).findAll(params);
   }
 
-  findOne({ scope, ...params }: any) {
+  findOne({ scope, ...params }: FindParams) {
     return this.repository.scope(scope).findOne(params);
   }
 
-  getFindParams({ params, query }) {
+  getFindParams({ params, query }): FindParams {
     const filters = this.getFilters(query);
     const includes = this.getIncludes(query);
     const orders = this.getOrders(query);
@@ -202,6 +203,7 @@ export abstract class CrudService {
         exclude: fields?.exclude?.length ? fields?.exclude : undefined,
       },
       include: includes,
+      scope: ['defaultScope'],
       limit: limit,
       offset: offset,
       where: filters.length ? filters : undefined,

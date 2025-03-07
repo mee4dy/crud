@@ -35,7 +35,13 @@ export default {
     return state.pk;
   },
   getData(state, getters) {
-    return state.data;
+    const dataDefault = getters.getDataDefault;
+    const data = state.data;
+
+    return {
+      ...dataDefault,
+      ...data,
+    };
   },
   getDataDefault(state) {
     return state.dataDefault;

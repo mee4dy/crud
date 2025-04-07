@@ -37,15 +37,15 @@ export abstract class CrudService {
     const fieldsExclude = this.fieldsExclude || [];
     const fieldsInclude: any = [];
 
-    if (fieldsInclude) {
-      for (let [fieldQuery, fieldName] of fields) {
-        if (this.allowGroups.includes(fieldName)) {
-          if (groups.length && groups.includes(fieldName)) {
-            fieldsInclude.push([fieldQuery, fieldName]);
-          }
-        } else {
+    for (const [fieldQuery, fieldName] of fields) {
+      if (this.allowGroups.includes(fieldName)) {
+        if (groups.length && groups.includes(fieldName)) {
           fieldsInclude.push([fieldQuery, fieldName]);
+        } else {
+          fieldsExclude.push(fieldName);
         }
+      } else {
+        fieldsInclude.push([fieldQuery, fieldName]);
       }
     }
 

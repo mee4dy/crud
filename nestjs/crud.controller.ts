@@ -2,7 +2,10 @@ import { All, Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '
 import { Response } from '../common/interfaces/response.interface';
 import { CrudService } from './crud.service';
 import { CrudCtx } from './decorators/crud-ctx.decorator';
+import { UsePipes } from '@nestjs/common';
+import { QueryParsePipe } from './pipes/query.parse.pipe';
 
+@UsePipes(new QueryParsePipe())
 export abstract class CrudController {
   constructor(private readonly service: CrudService) {
     this.pk = this.service.getPK();

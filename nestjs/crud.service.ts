@@ -63,7 +63,7 @@ export abstract class CrudService {
       for (const filter of this.allowFilters) {
         const filterType = filter.type;
         const filterKey = filter.key === 'pk' ? this.pk : filter.key;
-        const filterValue = queryFilters?.[filterKey];
+        const filterValue = queryFilters?.[filter.key];
         const filterValueFrom = queryFilters?.[`${filterKey}_from`];
         const filterValueTo = queryFilters?.[`${filterKey}_to`];
         const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field

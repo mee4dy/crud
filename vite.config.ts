@@ -55,6 +55,7 @@ export default defineConfig({
         additionalData: `
           @use "${pathSrc}/ui/vue/scss/variables.scss" as *;
         `,
+        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import', 'abs-percent'],
       },
     },
   },

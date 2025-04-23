@@ -102,20 +102,17 @@ export abstract class CrudService {
         let whereField = filterField
           ? filterField[0]
           : this.repository.sequelize.col(`${this.repository.name}.${filterFiled}`);
-        let whereValue: any;
+        const whereValue: any = {};
 
         switch (type) {
           case FilterType.text:
             if (filterValue) {
-              whereValue = {
-                [Op.like]: `%${filterValue}%`,
-              };
+              whereValue[Op.like] = `%${filterValue}%`;
             }
             break;
 
           case FilterType.period:
-            whereValue = {};
-
+          case FilterType.range:
             if (filterValueFrom) {
               whereValue[Op.gte] = filterValueFrom;
             }
@@ -128,14 +125,12 @@ export abstract class CrudService {
           case FilterType.number:
           default:
             if (filterValue) {
-              whereValue = {
-                [Op.eq]: filterValue,
-              };
+              whereValue[Op.eq] = filterValue;
             }
             break;
         }
 
-        if (whereField && whereValue) {
+        if (whereField && Reflect.ownKeys(whereValue).length) {
           filters.push(this.repository.sequelize.where(whereField, whereValue));
         }
       }

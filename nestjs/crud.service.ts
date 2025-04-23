@@ -68,13 +68,21 @@ export abstract class CrudService {
   }
 
   getAllowFilters(): Filter[] {
-    const allowFilters = this.allowFilters;
+    const allowFilters = structuredClone(this.allowFilters);
 
-    return allowFilters.map(({ key, type }) => {
+    return allowFilters.map((filter) => {
       return {
-        key: key === PK ? this.pk : key,
-        type: type,
+        ...filter,
+        key: filter.key === PK ? this.pk : filter.key,
       };
+    });
+  }
+
+  getAllowOrders(): string[] {
+    const allowOrders = this.allowOrders;
+
+    return allowOrders.map((key) => {
+      return key === PK ? this.pk : key;
     });
   }
 
@@ -84,12 +92,16 @@ export abstract class CrudService {
     const allowFilters = this.getAllowFilters();
 
     if (queryFilters) {
-      for (const { key, type } of allowFilters) {
-        const filterValue = queryFilters?.[key];
-        const filterValueFrom = queryFilters?.[`${key}_from`];
-        const filterValueTo = queryFilters?.[`${key}_to`];
-        const field = (this.fields || []).find(([select, fieldKey]) => fieldKey === key); // Custom field
-        let whereField = field ? field[0] : this.repository.sequelize.col(`${this.repository.name}.${key}`);
+      for (const { key, field, type } of allowFilters) {
+        const filterKey = key;
+        const filterFiled = field || filterKey;
+        const filterValue = queryFilters?.[filterKey];
+        const filterValueFrom = queryFilters?.[`${filterFiled}_from`];
+        const filterValueTo = queryFilters?.[`${filterFiled}_to`];
+        const filterField = (this.fields || []).find(([select, fieldKey]) => fieldKey === filterFiled); // Custom field
+        let whereField = filterField
+          ? filterField[0]
+          : this.repository.sequelize.col(`${this.repository.name}.${filterFiled}`);
         let whereValue: any;
 
         switch (type) {
@@ -151,6 +163,7 @@ export abstract class CrudService {
 
   getOrders(query) {
     const orders = [];
+    const allowOrders = this.getAllowOrders();
     const queryOrders = query.orders
       ? Object.entries(query.orders).map(([key, direction]) => [key, direction])
       : this.defaultOrders;
@@ -159,8 +172,8 @@ export abstract class CrudService {
     const fieldNames = fields.include.map((field) => field[1]);
 
     if (queryOrders) {
-      for (let key of this.allowOrders) {
-        const fieldKey = key === PK ? this.pk : key;
+      for (const key of allowOrders) {
+        const fieldKey = key;
         const fieldInSelect = !fieldNames.length || fieldNames.includes(fieldKey);
 
         const order = queryOrders

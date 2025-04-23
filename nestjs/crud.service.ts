@@ -5,6 +5,7 @@ import { Order } from '../common/interfaces/order.interface';
 import { Filter } from '../common/interfaces/filter.interface';
 import { merge } from '../common/helpers/merge.helper';
 import { FindParams } from './interfaces/find-params.interface';
+import { PK } from '../common/constatns/constatns';
 
 export abstract class CrudService {
   constructor(params?) {
@@ -16,11 +17,11 @@ export abstract class CrudService {
   protected pk: string = 'id';
   protected repository;
   protected limit: number;
-  protected allowFilters: Filter[] = [{ key: 'pk' }];
+  protected allowFilters: Filter[] = [{ key: PK }];
   protected allowGroups: string[] = [];
-  protected allowOrders: string[] = ['pk'];
-  protected defaultGroups: string[] = ['pk'];
-  protected defaultOrders: Order[] = [['pk', OrderDirection.desc]];
+  protected allowOrders: string[] = [PK];
+  protected defaultGroups: string[] = [PK];
+  protected defaultOrders: Order[] = [[PK, OrderDirection.desc]];
   protected fields;
   protected fieldsExclude: string[];
 
@@ -55,22 +56,43 @@ export abstract class CrudService {
     };
   }
 
+  getQueryFilters(queryFilters: object) {
+    const filters = structuredClone(queryFilters);
+
+    if (filters[PK]) {
+      filters[this.pk] = filters[PK];
+      delete filters[PK];
+    }
+
+    return filters;
+  }
+
+  getAllowFilters(): Filter[] {
+    const allowFilters = this.allowFilters;
+
+    return allowFilters.map(({ key, type }) => {
+      return {
+        key: key === PK ? this.pk : key,
+        type: type,
+      };
+    });
+  }
+
   getFilters(query) {
     const filters = [];
-    const queryFilters = query.filters;
+    const queryFilters = this.getQueryFilters(query.filters);
+    const allowFilters = this.getAllowFilters();
 
     if (queryFilters) {
-      for (const filter of this.allowFilters) {
-        const filterType = filter.type;
-        const filterKey = filter.key === 'pk' ? this.pk : filter.key;
-        const filterValue = queryFilters?.[filter.key];
-        const filterValueFrom = queryFilters?.[`${filterKey}_from`];
-        const filterValueTo = queryFilters?.[`${filterKey}_to`];
-        const field = (this.fields || []).find(([select, key]) => key === filterKey); // Custom field
-        let whereField = field ? field[0] : this.repository.sequelize.col(`${this.repository.name}.${filterKey}`);
+      for (const { key, type } of allowFilters) {
+        const filterValue = queryFilters?.[key];
+        const filterValueFrom = queryFilters?.[`${key}_from`];
+        const filterValueTo = queryFilters?.[`${key}_to`];
+        const field = (this.fields || []).find(([select, fieldKey]) => fieldKey === key); // Custom field
+        let whereField = field ? field[0] : this.repository.sequelize.col(`${this.repository.name}.${key}`);
         let whereValue: any;
 
-        switch (filterType) {
+        switch (type) {
           case FilterType.text:
             if (filterValue) {
               whereValue = {
@@ -112,11 +134,11 @@ export abstract class CrudService {
 
   getGroups(query) {
     const groups: any = [];
-    const queryGroups = (query.groups || this.defaultGroups).map((key) => (key === 'pk' ? this.pk : key));
+    const queryGroups = (query.groups || this.defaultGroups).map((key) => (key === PK ? this.pk : key));
 
     if (queryGroups) {
       for (let key of this.allowGroups) {
-        const fieldKey = key === 'pk' ? this.pk : key;
+        const fieldKey = key === PK ? this.pk : key;
 
         if (queryGroups.includes(fieldKey)) {
           groups.push(fieldKey);
@@ -138,12 +160,12 @@ export abstract class CrudService {
 
     if (queryOrders) {
       for (let key of this.allowOrders) {
-        const fieldKey = key === 'pk' ? this.pk : key;
+        const fieldKey = key === PK ? this.pk : key;
         const fieldInSelect = !fieldNames.length || fieldNames.includes(fieldKey);
 
         const order = queryOrders
           .map(([field, direction]) => {
-            if (field === 'pk') {
+            if (field === PK) {
               field = this.pk;
             }
 

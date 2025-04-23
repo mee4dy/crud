@@ -4,6 +4,7 @@ import { CrudService } from './crud.service';
 import { CrudCtx } from './decorators/crud-ctx.decorator';
 import { UsePipes } from '@nestjs/common';
 import { QueryParsePipe } from './pipes/query.parse.pipe';
+import { PK } from '../common/constatns/constatns';
 
 @UsePipes(new QueryParsePipe())
 export abstract class CrudController {
@@ -29,12 +30,13 @@ export abstract class CrudController {
   }
 
   @Get('/:pk')
-  async item(@CrudCtx() { params }, @Param('pk') pk: number): Promise<Response> {
+  async item(@CrudCtx() { params }, @Param(PK) pk: number, @Query() query): Promise<Response> {
     const item = await this.service.getItem({
       params,
       query: {
         filters: {
           [this.pk]: pk,
+          ...query.filters,
         },
       },
     });
@@ -60,7 +62,7 @@ export abstract class CrudController {
   }
 
   @Post('/update')
-  async update(@CrudCtx() { params }, @Body('pk') pk: number, @Body('data') data: object): Promise<Response> {
+  async update(@CrudCtx() { params }, @Body(PK) pk: number, @Body('data') data: object): Promise<Response> {
     const item = await this.service.update(pk, data);
 
     return {
@@ -72,7 +74,7 @@ export abstract class CrudController {
   }
 
   @Post('/delete')
-  async delete(@CrudCtx() { params }, @Body('pk') pk: number): Promise<Response> {
+  async delete(@CrudCtx() { params }, @Body(PK) pk: number): Promise<Response> {
     const result = await this.service.delete({
       [this.pk]: pk,
     });

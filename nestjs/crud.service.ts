@@ -59,7 +59,7 @@ export abstract class CrudService {
   getQueryFilters(queryFilters: object) {
     const filters = structuredClone(queryFilters);
 
-    if (filters[PK]) {
+    if (filters?.[PK]) {
       filters[this.pk] = filters[PK];
       delete filters[PK];
     }

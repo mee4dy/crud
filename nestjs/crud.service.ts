@@ -107,7 +107,7 @@ export abstract class CrudService {
         switch (type) {
           case FilterType.text:
             if (filterValue) {
-              whereValue[Op.iLike] = `%${filterValue}%`;
+              whereValue[Op.like] = `%${filterValue}%`;
             }
             break;
 

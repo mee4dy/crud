@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.5.19",
+  "version": "1.5.20",
   "description": "",
   "main": "./dist/vuex/index.js",
   "type": "module",

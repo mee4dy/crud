@@ -5,7 +5,7 @@ export default {
   getLoading: (state) => state.loading,
   getSending: (state) => state.sending,
   getType(state) {
-    return !state.data[state.pk] ? FormTypesEnum.create : FormTypesEnum.edit;
+    return !state.pk ? FormTypesEnum.create : FormTypesEnum.edit;
   },
   getEndpoints(state) {
     return state.endpoints;

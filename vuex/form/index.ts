@@ -30,12 +30,20 @@ export function mapFormData(path, params: { getterData?: string; mutationField?:
 }
 
 export class CrudStoreForm {
-  constructor(params) {
-    this.state = Object.assign(state, params);
-
-    this.getters = getters;
-    this.actions = actions;
-    this.mutations = mutations;
+  constructor(params = {}) {
+    this.state = {
+      ...state,
+      ...params,
+    };
+    this.getters = {
+      ...getters,
+    };
+    this.actions = {
+      ...actions,
+    };
+    this.mutations = {
+      ...mutations,
+    };
   }
 
   public state;

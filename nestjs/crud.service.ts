@@ -1,4 +1,4 @@
-import { Model, Op, Sequelize } from 'sequelize';
+import { Op, Model, ModelStatic } from 'sequelize';
 import { FilterType } from '../common/enums/filter-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { Order } from '../common/interfaces/order.interface';
@@ -15,7 +15,7 @@ export abstract class CrudService {
   }
 
   protected pk: string = 'id';
-  protected repository;
+  protected repository: ModelStatic<Model>;
   protected limit: number;
   protected allowFilters: Filter[] = [{ key: PK }];
   protected allowGroups: string[] = [];
@@ -25,11 +25,11 @@ export abstract class CrudService {
   protected fields;
   protected fieldsExclude: string[];
 
-  getPK() {
+  getPK(): string {
     return this.pk;
   }
 
-  getRepository() {
+  getRepository(): typeof Model {
     return this.repository;
   }
 
@@ -192,7 +192,7 @@ export abstract class CrudService {
     return orders;
   }
 
-  getLimit(query) {
+  getLimit(query): number {
     if (query?.limit) {
       return +query.limit;
     }
@@ -200,7 +200,7 @@ export abstract class CrudService {
     return this.limit;
   }
 
-  getOffset(query) {
+  getOffset(query): number {
     return +query?.offset || 0;
   }
 
@@ -211,11 +211,11 @@ export abstract class CrudService {
   }
 
   findAll({ scope, ...params }: FindParams) {
-    return this.repository.scope(scope).findAll(params);
+    return this.repository.scope(scope).findAll(params as object);
   }
 
   findOne({ scope, ...params }: FindParams) {
-    return this.repository.scope(scope).findOne(params);
+    return this.repository.scope(scope).findOne(params as object);
   }
 
   getFindParams({ params, query }): FindParams {

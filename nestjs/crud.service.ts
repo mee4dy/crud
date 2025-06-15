@@ -29,7 +29,7 @@ export abstract class CrudService {
     return this.pk;
   }
 
-  getRepository(): typeof Model {
+  getRepository(): ModelStatic<Model> {
     return this.repository;
   }
 

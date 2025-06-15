@@ -7,7 +7,7 @@ import { merge } from '../common/helpers/merge.helper';
 import { FindParams } from './interfaces/find-params.interface';
 import { PK } from '../common/constatns/constatns';
 
-export abstract class CrudService {
+export abstract class CrudService<T extends Model> {
   constructor(params?) {
     if (params) {
       Object.assign(this, { ...params });
@@ -15,7 +15,7 @@ export abstract class CrudService {
   }
 
   protected pk: string = 'id';
-  protected repository: ModelStatic<Model>;
+  protected repository: ModelStatic<T>;
   protected limit: number;
   protected allowFilters: Filter[] = [{ key: PK }];
   protected allowGroups: string[] = [];
@@ -29,7 +29,7 @@ export abstract class CrudService {
     return this.pk;
   }
 
-  getRepository(): ModelStatic<Model> {
+  getRepository(): ModelStatic<T> {
     return this.repository;
   }
 
@@ -261,9 +261,7 @@ export abstract class CrudService {
   }
 
   create(data: object) {
-    return this.repository.create({
-      ...data,
-    });
+    return this.repository.create(data as any);
   }
 
   update(pk: number, data: object, returning: boolean = true) {
@@ -271,7 +269,7 @@ export abstract class CrudService {
       .update(data, {
         where: {
           [this.pk]: pk,
-        },
+        } as any,
       })
       .then((result: any) => {
         if (returning) {

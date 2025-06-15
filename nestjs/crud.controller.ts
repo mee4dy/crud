@@ -4,9 +4,10 @@ import { CrudService } from './crud.service';
 import { CrudCtx } from './decorators/crud-ctx.decorator';
 import { QueryParsePipe } from './pipes/query.parse.pipe';
 import { PK } from '../common/constatns/constatns';
+import { Model } from 'sequelize';
 
-export abstract class CrudController {
-  constructor(private readonly service: CrudService) {
+export abstract class CrudController<T extends Model> {
+  constructor(private readonly service: CrudService<T>) {
     this.pk = this.service.getPK();
   }
 

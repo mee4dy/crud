@@ -229,8 +229,8 @@ export abstract class CrudService<T extends Model> {
     const findParams = params || {};
     const findParamsBase = {
       attributes: {
-        include: fields?.include?.length ? fields?.include : undefined,
-        exclude: fields?.exclude?.length ? fields?.exclude : undefined,
+        include: fields?.include?.length ? fields?.include : [],
+        exclude: fields?.exclude?.length ? fields?.exclude : [],
       },
       include: includes,
       scope: ['defaultScope'],

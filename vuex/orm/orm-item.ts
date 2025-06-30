@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import { diff } from 'deep-object-diff';
 import { Actions } from './orm.interfaces';
 
 export class ORMItem {
@@ -95,18 +95,20 @@ export class ORMItem {
   public save() {
     const item = this.getItem();
     const itemDiff = this.diff();
+    const pk = this.getPK();
 
     return this.callAction('update', {
-      pk: item.pk,
+      pk: item[pk],
       data: itemDiff,
     });
   }
 
   public delete() {
     const item = this.getItem();
+    const pk = this.getPK();
 
     return this.callAction('delete', {
-      pk: item.pk,
+      pk: item[pk],
     });
   }
 }

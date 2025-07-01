@@ -1,12 +1,12 @@
 {
   "name": "@mee4dy/crud",
-  "version": "1.5.27",
+  "version": "1.5.28",
   "description": "",
-  "main": "./dist/vuex/index.js",
   "type": "module",
   "exports": {
     "./common/*": "./dist/common/*.cjs",
     "./nestjs": "./dist/nestjs/index.cjs",
+    "./client": "./dist/client/index.js",
     "./vuex": "./dist/vuex/index.js",
     "./ui/nuxt": "./dist/ui/nuxt/index.js",
     "./ui/vue": "./dist/ui/vue/index.js"
@@ -36,6 +36,7 @@
     "@mdi/font": "^7.4.47",
     "@nestjs/common": "^10.3.3",
     "@vitejs/plugin-vue2": "^2.3.3",
+    "axios": "^1.7.2",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.23.1",
     "deep-object-diff": "^1.1.9",

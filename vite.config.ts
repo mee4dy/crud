@@ -11,8 +11,9 @@ export default defineConfig({
         // Backend
         'nestjs/index.ts',
 
-        // Frontend Store
+        // Frontend
         'vuex/index.js',
+        'client/index.ts',
 
         // Frontend UI
         'ui/vue',
@@ -40,6 +41,7 @@ export default defineConfig({
         'qs',
         'deep-object-diff',
         'path',
+        'axios',
       ],
     },
   },

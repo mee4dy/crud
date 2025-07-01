@@ -1,5 +1,5 @@
 import { replacePKItems } from '../../common/helpers/pk.helper';
-import { ORM } from '../orm';
+import { ORM } from '../../orm';
 import * as _ from 'lodash';
 
 export default {

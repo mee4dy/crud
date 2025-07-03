@@ -1,0 +1,29 @@
+{
+  "name": "@mee4dy/crud-orm",
+  "version": "1.6.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mee4dy/crud.git",
+    "directory": "packages/crud-orm"
+  },
+  "author": "Mikhail Rybka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mee4dy/crud/issues"
+  },
+  "homepage": "https://github.com/mee4dy/crud#readme",
+  "description": "",
+  "dependencies": {
+    "deep-object-diff": "^1.1.9",
+    "lodash": "^4.17.21"
+  }
+}

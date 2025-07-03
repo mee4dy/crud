@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -12,7 +9,17 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "outDir": "./dist"
+    "composite": true,
+    "baseUrl": "./packages",
+    "outDir": "./dist",
+    "paths": {
+      "@mee4dy/crud-common/*": ["crud-common/src/*"],
+      "@mee4dy/crud-orm/*": ["crud-orm/src/*"],
+      "@mee4dy/crud-client/*": ["crud-client/src/*"],
+      "@mee4dy/crud-nestjs/*": ["crud-nestjs/src/*"],
+      "@mee4dy/crud-vuex/*": ["crud-vuex/src/*"],
+      "@mee4dy/crud-ui/*": ["crud-ui/src/*"]
+    }
   },
-  "exclude": ["node_modules", "dist", "test/**/*", "*.spec.ts"]
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,0 +1,33 @@
+{
+  "name": "@mee4dy/crud-nestjs",
+  "version": "1.6.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mee4dy/crud.git",
+    "directory": "packages/crud-nestjs"
+  },
+  "author": "Mikhail Rybka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mee4dy/crud/issues"
+  },
+  "homepage": "https://github.com/mee4dy/crud#readme",
+  "description": "",
+  "dependencies": {
+    "@mee4dy/crud-common": "file:../crud-common",
+    "@nestjs/common": "^11.1.3",
+    "lodash": "^4.17.21",
+    "qs": "^6.14.0",
+    "sequelize": "^6.37.1",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,21 +1,26 @@
 {
-  "name": "@mee4dy/crud",
-  "version": "1.5.28",
+  "name": "mee4dy-monorepo",
+  "version": "1.6.0",
   "description": "",
-  "type": "module",
-  "exports": {
-    "./common/*": "./dist/common/*.cjs",
-    "./nestjs": "./dist/nestjs/index.cjs",
-    "./client": "./dist/client/index.js",
-    "./vuex": "./dist/vuex/index.js",
-    "./ui/nuxt": "./dist/ui/nuxt/index.js",
-    "./ui/vue": "./dist/ui/vue/index.js"
-  },
+  "workspaces": [
+    "./packages/*"
+  ],
   "scripts": {
-    "dev": "npm run clean && vite build --watch",
-    "build": "npm run clean && vite build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rimraf dist",
+    "build:client": "npm run build --prefix packages/crud-client",
+    "build:common": "npm run build --prefix packages/crud-common",
+    "build:nestjs": "npm run build --prefix packages/crud-nestjs",
+    "build:orm": "npm run build --prefix packages/crud-orm",
+    "build:ui": "npm run build --prefix packages/crud-ui",
+    "build:vuex": "npm run build --prefix packages/crud-vuex",
+    "dev:client": "npm run dev --prefix packages/crud-client",
+    "dev:common": "npm run dev --prefix packages/crud-common",
+    "dev:nestjs": "npm run dev --prefix packages/crud-nestjs",
+    "dev:orm": "npm run dev --prefix packages/crud-orm",
+    "dev:ui": "npm run dev --prefix packages/crud-ui",
+    "dev:vuex": "npm run dev --prefix packages/crud-vuex",
+    "dev": "npm run clean && concurrently 'npm run dev:common' 'npm run dev:orm' 'npm run dev:client' 'npm run dev:nestjs' 'npm run dev:ui' 'npm run dev:vuex'",
+    "build": "npm run clean && npm run build:common && npm run build:orm && npm run build:client && npm run build:nestjs && npm run build:ui && npm run build:vuex",
+    "clean": "rm -rf ./packages/*/dist ./packages/*/tsconfig.tsbuildinfo",
     "prepublishOnly": "npm run clean && npm run build",
     "migrate": "node dist/migrations/migrate"
   },
@@ -23,7 +28,7 @@
     "type": "git",
     "url": "git+https://github.com/mee4dy/crud.git"
   },
-  "author": "",
+  "author": "Mikhail Rybka",
   "license": "ISC",
   "publishConfig": {
     "access": "public"
@@ -32,27 +37,6 @@
     "url": "https://github.com/mee4dy/crud/issues"
   },
   "homepage": "https://github.com/mee4dy/crud#readme",
-  "dependencies": {
-    "@mdi/font": "^7.4.47",
-    "@nestjs/common": "^10.3.3",
-    "@vitejs/plugin-vue2": "^2.3.3",
-    "axios": "^1.7.2",
-    "bootstrap": "^4.5.3",
-    "bootstrap-vue": "^2.23.1",
-    "deep-object-diff": "^1.1.9",
-    "find-parent-dir": "^0.3.1",
-    "lodash": "^4.17.21",
-    "moment": "^2.30.1",
-    "qs": "^6.12.3",
-    "replace": "^1.2.2",
-    "rimraf": "^5.0.5",
-    "sass-loader": "^10.4.1",
-    "sequelize": "^6.37.1",
-    "vite": "^6.0.3",
-    "vue": "^2.7.16",
-    "vue-server-renderer": "^2.7.16",
-    "vue-template-compiler": "^2.7.16"
-  },
   "keywords": [
     "crud",
     "nestjs crud",
@@ -63,5 +47,8 @@
     "crud table",
     "mee4dy",
     "mee4dy crud"
-  ]
+  ],
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
 }

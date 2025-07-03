@@ -1,0 +1,25 @@
+{
+  "name": "@mee4dy/crud-common",
+  "version": "1.6.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mee4dy/crud.git",
+    "directory": "packages/crud-common"
+  },
+  "author": "Mikhail Rybka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mee4dy/crud/issues"
+  },
+  "homepage": "https://github.com/mee4dy/crud#readme",
+  "description": ""
+}

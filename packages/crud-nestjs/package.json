@@ -1,6 +1,6 @@
 {
   "name": "@mee4dy/crud-nestjs",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/mee4dy/crud#readme",
   "description": "",
   "dependencies": {
-    "@mee4dy/crud-common": "file:../crud-common",
+    "@mee4dy/crud-common": "^1.6.0",
     "@nestjs/common": "^11.1.3",
     "lodash": "^4.17.21",
     "qs": "^6.14.0",

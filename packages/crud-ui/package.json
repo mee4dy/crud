@@ -15,6 +15,9 @@
   },
   "author": "Mikhail Rybka",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/mee4dy/crud/issues"
   },

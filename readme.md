@@ -6,7 +6,10 @@ With our powerful full stack crud system, customize it to suit you.
 ## Installation
 
 ```
-npm install @mee4dy/crud
+npm install @mee4dy/crud-nestjs
+npm install @mee4dy/crud-vuex
+npm install @mee4dy/crud-ui
+npm install @mee4dy/crud-client
 ```
 
 ## Running migrations

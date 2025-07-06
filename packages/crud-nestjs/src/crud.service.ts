@@ -5,7 +5,7 @@ import { Order } from '@mee4dy/crud-common/dist/interfaces/order.interface';
 import { Filter } from '@mee4dy/crud-common/dist/interfaces/filter.interface';
 import { merge } from '@mee4dy/crud-common/dist/helpers/merge.helper';
 import { FindParams } from './interfaces/find-params.interface';
-import { PK } from '@mee4dy/crud-common/dist/constatns/constatns';
+import { PK } from '@mee4dy/crud-common/dist/constants/constants';
 
 export abstract class CrudService<T extends Model> {
   constructor(params?) {

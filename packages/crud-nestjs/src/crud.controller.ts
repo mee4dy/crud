@@ -3,7 +3,7 @@ import { Response } from '@mee4dy/crud-common/dist/interfaces/response.interface
 import { CrudService } from './crud.service';
 import { CrudCtx } from './decorators/crud-ctx.decorator';
 import { QueryParsePipe } from './pipes/query.parse.pipe';
-import { PK } from '@mee4dy/crud-common/dist/constatns/constatns';
+import { PK } from '@mee4dy/crud-common/dist/constants/constants';
 import { Model } from 'sequelize';
 
 export abstract class CrudController<T extends Model> {
